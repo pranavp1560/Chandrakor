@@ -1,0 +1,21 @@
+{
+  "name": "chandrakor-saree-ecommerce",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chandrakor — Premium Indian Saree E-Commerce Platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n \"customer,admin\" -c \"magenta,blue\" \"npm run dev:customer\" \"npm run dev:admin\"",
+    "dev:customer": "npm run dev --workspace=@chandrakor/customer",
+    "dev:admin": "npm run dev --workspace=@chandrakor/admin",
+    "build": "npm run build:customer && npm run build:admin",
+    "build:customer": "npm run build --workspace=@chandrakor/customer",
+    "build:admin": "npm run build --workspace=@chandrakor/admin"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
