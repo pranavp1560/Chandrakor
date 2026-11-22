@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   Shield,
+  ShieldCheck,
   ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -30,10 +31,11 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     { label: 'Products', path: '/products', icon: Boxes },
     { label: 'Categories', path: '/categories', icon: Layers },
     { label: 'Inventory', path: '/inventory', icon: Package },
+    { label: 'Users', path: '/users', icon: Users },
     { label: 'Coupons & Offers', path: '/coupons', icon: BookmarkCheck },
     { label: 'Collections', path: '/collections', icon: BookmarkCheck },
     { label: 'Homepage Banners', path: '/banners', icon: ImageIcon },
-    { label: 'Staff & Roles', path: '/admins', icon: Users },
+    { label: 'Staff & Roles', path: '/admins', icon: ShieldCheck },
     { label: 'Store Settings', path: '/settings', icon: Settings },
   ];
 

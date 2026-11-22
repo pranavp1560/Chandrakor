@@ -9,6 +9,7 @@ import { CouponsPage } from './pages/CouponsPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { InventoryPage } from './pages/InventoryPage';
+import { UsersPage } from './pages/UsersPage';
 import { CollectionsPage } from './pages/CollectionsPage';
 import { BannersPage } from './pages/BannersPage';
 import { AdminsPage } from './pages/AdminsPage';
@@ -87,6 +88,14 @@ export function App() {
             element={
               <ProtectedRoute>
                 <InventoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <UsersPage />
               </ProtectedRoute>
             }
           />
