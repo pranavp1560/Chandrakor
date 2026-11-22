@@ -150,12 +150,12 @@ export const WishlistPage: React.FC = () => {
             return (
               <div
                 key={product.id}
-                className="group bg-white border border-brand-cream/80 rounded-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300 relative"
+                className="group flex flex-col justify-between relative bg-transparent"
               >
-                {/* Remove button */}
+                {/* Remove from wishlist button */}
                 <button
                   onClick={() => removeFromWishlist(product.id)}
-                  className="absolute top-2.5 right-2.5 z-20 p-2 bg-white/90 hover:bg-red-50 text-brand-warm-grey hover:text-red-700 rounded-full shadow-sm backdrop-blur-sm transition-colors"
+                  className="absolute top-2.5 right-2.5 z-20 p-2 bg-white/90 hover:bg-rose-50 text-stone-600 hover:text-rose-600 rounded-full shadow-md backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
                   aria-label="Remove item"
                   title="Remove from wishlist"
                 >
@@ -165,24 +165,23 @@ export const WishlistPage: React.FC = () => {
                 {/* Saree Image Container */}
                 <Link
                   to={`/product/${product.slug}`}
-                  className="block relative aspect-[3/4] bg-stone-100 overflow-hidden"
+                  className="block relative aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden bg-stone-100 shadow-sm"
                 >
                   <img
                     src={primaryImage}
                     alt={product.name}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
 
                   {/* Badges */}
-                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
-                    {product.is_best_seller && (
-                      <span className="bg-brand-burgundy text-white text-[10px] tracking-widest font-semibold uppercase px-2 py-0.5 rounded-sm shadow-sm">
-                        Best Seller
+                  <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+                    {product.is_best_seller ? (
+                      <span className="bg-[#693922] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-md shadow-sm">
+                        TRENDING
                       </span>
-                    )}
-                    {discountPercent > 0 && (
-                      <span className="bg-emerald-800 text-white text-[10px] tracking-wider font-semibold px-2 py-0.5 rounded-sm shadow-sm">
-                        {discountPercent}% OFF
+                    ) : (
+                      <span className="bg-[#245f3b] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-md shadow-sm">
+                        SAME DAY DISPATCH
                       </span>
                     )}
                   </div>
@@ -190,7 +189,7 @@ export const WishlistPage: React.FC = () => {
                   {/* Sold out overlay */}
                   {isOutOfStock && (
                     <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex items-center justify-center">
-                      <span className="bg-brand-charcoal text-white font-serif text-xs px-3 py-1 uppercase tracking-widest font-semibold shadow-md">
+                      <span className="bg-[#261711] text-white font-medium text-xs px-3.5 py-1.5 uppercase tracking-widest rounded-md shadow-md">
                         Sold Out
                       </span>
                     </div>
@@ -198,54 +197,62 @@ export const WishlistPage: React.FC = () => {
                 </Link>
 
                 {/* Info & Details */}
-                <div className="p-4 flex-1 flex flex-col justify-between">
+                <div className="pt-3 pb-1 flex flex-col justify-between flex-1 space-y-1">
                   <div>
-                    <div className="flex items-center justify-between text-[11px] text-brand-warm-grey mb-1 uppercase tracking-wider">
-                      <span>{product.fabric || product.category?.name || 'Pure Handloom'}</span>
-                      <span className="font-mono text-[10px] text-slate-400">{product.sku}</span>
-                    </div>
-
                     <Link
                       to={`/product/${product.slug}`}
                       className="block group-hover:text-brand-burgundy transition-colors"
                     >
-                      <h3 className="font-serif text-base font-semibold text-brand-charcoal line-clamp-1">
+                      <h3 className="text-sm sm:text-[15px] font-medium text-[#382218] line-clamp-2 leading-snug">
                         {product.name}
                       </h3>
                     </Link>
 
-                    {product.colour && (
-                      <p className="text-xs text-brand-warm-grey mt-0.5 line-clamp-1">
-                        Shade: <span className="text-brand-charcoal font-medium">{product.colour}</span>
-                      </p>
-                    )}
+                    <p className="text-xs text-[#8c7467] font-normal line-clamp-1 mt-0.5">
+                      {product.fabric || 'Silk Blend'} · {product.occasion || 'Traditional'}
+                    </p>
+
+                    {/* Star Rating Line */}
+                    <div className="flex items-center gap-1.5 text-xs text-[#523325] pt-0.5">
+                      <span className="text-[#523325] tracking-tighter text-xs select-none">
+                        ★★★★★
+                      </span>
+                      <span className="font-semibold text-[#523325] text-[11px]">
+                        4.8 <span className="text-[#8c7467] font-normal">| Verified</span>
+                      </span>
+                    </div>
 
                     {/* Price */}
-                    <div className="mt-2.5 flex items-baseline gap-2">
-                      <span className="text-base font-semibold text-brand-burgundy font-serif">
-                        ₹{Number(product.selling_price).toLocaleString('en-IN')}
+                    <div className="flex items-baseline gap-2 pt-1">
+                      <span className="text-base sm:text-lg font-bold text-[#261711]">
+                        ₹ {Number(product.selling_price).toLocaleString('en-IN')}
                       </span>
                       {product.mrp > product.selling_price && (
-                        <span className="text-xs text-brand-warm-grey line-through">
-                          ₹{Number(product.mrp).toLocaleString('en-IN')}
-                        </span>
+                        <>
+                          <span className="text-xs text-[#9a8579] line-through font-normal">
+                            MRP ₹ {Number(product.mrp).toLocaleString('en-IN')}
+                          </span>
+                          <span className="text-xs sm:text-sm font-semibold text-[#276e43]">
+                            {discountPercent}% off
+                          </span>
+                        </>
                       )}
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="mt-4 pt-3 border-t border-brand-cream/60 flex items-center gap-2">
+                  <div className="pt-2">
                     {!isOutOfStock ? (
                       <button
                         onClick={() => handleMoveToCart(product)}
                         disabled={movingId === product.id}
-                        className="w-full py-2.5 px-3 bg-brand-burgundy hover:bg-brand-burgundy-dark text-white text-xs font-semibold uppercase tracking-wider rounded-sm transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                        className="w-full py-2.5 px-3 bg-[#693922] hover:bg-[#522b18] text-white text-xs font-semibold uppercase tracking-wider rounded-lg transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
                       >
                         <ShoppingBag className="w-3.5 h-3.5" />
                         <span>{movingId === product.id ? 'Moving...' : 'Move to Bag'}</span>
                       </button>
                     ) : (
-                      <div className="w-full text-center py-2 text-xs font-medium text-amber-900 bg-amber-50 rounded border border-amber-200">
+                      <div className="w-full text-center py-2 text-xs font-medium text-amber-900 bg-amber-50 rounded-lg border border-amber-200">
                         Temporarily Out of Stock
                       </div>
                     )}
