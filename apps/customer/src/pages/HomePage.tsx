@@ -334,55 +334,6 @@ export const HomePage: React.FC = () => {
           <div className="text-center py-12 text-brand-warm-grey">Loading cherished heirlooms...</div>
         )}
       </section>
-
-      {/* 7. WEAVING CLUSTERS & HERITAGE SPOTLIGHT */}
-      <section className="bg-brand-cream/30 border-y border-brand-cream/80 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
-            <span className="text-xs uppercase tracking-widest text-brand-burgundy font-semibold">
-              Purity in Every Thread
-            </span>
-            <h2 className="font-serif text-3xl font-bold text-brand-charcoal">
-              Our Revered Weaving Enclaves
-            </h2>
-            <p className="text-xs sm:text-sm text-brand-warm-grey">
-              We partner directly with traditional weaving families across India’s historic textile epicenters.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 border border-brand-cream/80 rounded-sm space-y-3 text-center">
-              <div className="w-12 h-12 rounded-full bg-brand-cream/60 flex items-center justify-center mx-auto text-brand-burgundy font-serif text-xl font-bold">
-                1
-              </div>
-              <h3 className="font-serif text-xl font-semibold text-brand-charcoal">Varanasi, Uttar Pradesh</h3>
-              <p className="text-xs text-brand-warm-grey leading-relaxed">
-                Famed for pure Katan silk and traditional Kadwa jangla weaves where gold and silver zari are engraved by hand, thread by thread.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 border border-brand-cream/80 rounded-sm space-y-3 text-center">
-              <div className="w-12 h-12 rounded-full bg-brand-cream/60 flex items-center justify-center mx-auto text-brand-burgundy font-serif text-xl font-bold">
-                2
-              </div>
-              <h3 className="font-serif text-xl font-semibold text-brand-charcoal">Kanchipuram, Tamil Nadu</h3>
-              <p className="text-xs text-brand-warm-grey leading-relaxed">
-                Ancient interlocking Korvai temple borders woven using three-shuttle looms and high-density mulberry silk threads.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 border border-brand-cream/80 rounded-sm space-y-3 text-center">
-              <div className="w-12 h-12 rounded-full bg-brand-cream/60 flex items-center justify-center mx-auto text-brand-burgundy font-serif text-xl font-bold">
-                3
-              </div>
-              <h3 className="font-serif text-xl font-semibold text-brand-charcoal">Yeola, Maharashtra</h3>
-              <p className="text-xs text-brand-warm-grey leading-relaxed">
-                The royal legacy of the Peshwas, renowned for tapestry-woven peacock (Mor) pallus and kaleidoscopic dual-tone silks.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
