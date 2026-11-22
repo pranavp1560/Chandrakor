@@ -73,9 +73,9 @@ export const HomePage: React.FC = () => {
   const currentBanner = banners[activeBannerIndex];
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-16">
+    <div className="space-y-12 sm:space-y-24 pb-16 w-full max-w-full overflow-hidden">
       {/* 1. HERO BANNER SLIDER */}
-      <section className="relative w-full h-[520px] sm:h-[620px] lg:h-[700px] bg-brand-charcoal overflow-hidden">
+      <section className="relative w-full h-[480px] sm:h-[620px] lg:h-[700px] bg-brand-charcoal overflow-hidden max-w-full">
         {banners.length > 0 && currentBanner ? (
           <div className="relative w-full h-full">
             {/* Background Image with subtle zoom */}
@@ -85,38 +85,38 @@ export const HomePage: React.FC = () => {
               className="w-full h-full object-cover object-center transition-all duration-1000 ease-in-out scale-100"
             />
             {/* Gradient Overlays for contrast & warmth */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
             {/* Banner Editorial Content */}
             <div className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
-              <div className="max-w-xl text-white space-y-5 animate-in fade-in slide-in-from-bottom-6 duration-700">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-burgundy/80 backdrop-blur-sm border border-brand-gold/40 text-brand-gold text-[11px] uppercase tracking-widest font-semibold rounded-sm">
+              <div className="max-w-xl text-white space-y-4 sm:space-y-5 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-brand-burgundy/80 backdrop-blur-sm border border-brand-gold/40 text-brand-gold text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold rounded-sm">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Heirloom Indian Weaves</span>
                 </div>
 
-                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-white">
+                <h1 className="font-serif text-2xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-white break-words">
                   {currentBanner.title}
                 </h1>
 
                 {currentBanner.subtitle && (
-                  <p className="text-sm sm:text-base text-stone-200 font-light leading-relaxed max-w-lg">
+                  <p className="text-xs sm:text-base text-stone-200 font-light leading-relaxed max-w-lg line-clamp-3 sm:line-clamp-none">
                     {currentBanner.subtitle}
                   </p>
                 )}
 
-                <div className="pt-2 flex flex-wrap items-center gap-4">
+                <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
                   <Link
                     to={currentBanner.button_link || '/shop'}
-                    className="px-7 py-3.5 bg-brand-burgundy hover:bg-brand-burgundy-light text-white text-xs font-semibold uppercase tracking-[0.2em] transition-all rounded-sm shadow-lg hover:shadow-brand-burgundy/40 flex items-center gap-2 border border-brand-burgundy-light"
+                    className="px-5 py-3 sm:px-7 sm:py-3.5 bg-brand-burgundy hover:bg-brand-burgundy-light text-white text-[11px] sm:text-xs font-semibold uppercase tracking-wider sm:tracking-[0.2em] transition-all rounded-sm shadow-lg hover:shadow-brand-burgundy/40 flex items-center gap-2 border border-brand-burgundy-light"
                   >
                     <span>{currentBanner.button_text || 'Explore Sarees'}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </Link>
                   <Link
                     to="/about"
-                    className="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs font-medium uppercase tracking-[0.15em] transition-all backdrop-blur-sm rounded-sm border border-white/20"
+                    className="px-4 py-3 sm:px-6 sm:py-3.5 bg-white/10 hover:bg-white/20 text-white text-[11px] sm:text-xs font-medium uppercase tracking-wider sm:tracking-[0.15em] transition-all backdrop-blur-sm rounded-sm border border-white/20"
                   >
                     Our Heritage
                   </Link>
@@ -170,11 +170,11 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 2. EDITORIAL BRAND INTRODUCTION */}
-      <section className="max-w-4xl mx-auto px-4 text-center space-y-4">
-        <span className="text-brand-burgundy font-serif italic text-lg sm:text-xl">
+      <section className="max-w-4xl mx-auto px-4 text-center space-y-3 sm:space-y-4">
+        <span className="text-brand-burgundy font-serif italic text-base sm:text-xl block">
           The Sacred Narrative of Indian Drapes
         </span>
-        <h2 className="font-serif text-3xl sm:text-4xl text-brand-charcoal font-bold tracking-tight">
+        <h2 className="font-serif text-2xl sm:text-4xl text-brand-charcoal font-bold tracking-tight break-words">
           Where Generational Artistry Meets Uncompromising Purity
         </h2>
         <div className="w-16 h-0.5 bg-brand-gold mx-auto my-2" />
@@ -272,8 +272,8 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 5. EDITORIAL BRIDAL & WEDDING BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-sm overflow-hidden bg-brand-charcoal min-h-[420px] flex items-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-hidden">
+        <div className="relative rounded-sm overflow-hidden bg-brand-charcoal min-h-[380px] sm:min-h-[420px] flex items-center">
           <img
             src="https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&q=85&w=1600"
             alt="Chandrakor Royal Bridal Trousseau"
@@ -281,20 +281,20 @@ export const HomePage: React.FC = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-brand-charcoal via-brand-burgundy/90 to-transparent" />
 
-          <div className="relative z-10 p-8 sm:p-14 max-w-xl text-white space-y-4">
-            <span className="text-xs tracking-[0.3em] uppercase text-brand-gold font-bold">
+          <div className="relative z-10 p-5 sm:p-14 max-w-xl text-white space-y-3 sm:space-y-4">
+            <span className="text-[10px] sm:text-xs tracking-wider sm:tracking-[0.3em] uppercase text-brand-gold font-bold">
               Royal Trousseau & Bridal Sarees
             </span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-bold leading-tight">
+            <h2 className="font-serif text-2xl sm:text-5xl font-bold leading-tight break-words">
               An Heirloom for Your Most Sacred Milestone
             </h2>
             <p className="text-xs sm:text-sm text-stone-200 leading-relaxed font-light">
               Crafted with authentic gold-silver zari kadwa, heavy korvai temple borders, and bespoke peacock tapestries designed to be cherished for generations.
             </p>
-            <div className="pt-3">
+            <div className="pt-2 sm:pt-3">
               <Link
                 to="/shop?collection=wedding-collection"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-brand-gold hover:bg-brand-gold-light text-brand-charcoal text-xs font-semibold uppercase tracking-[0.2em] transition-all rounded-sm shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-brand-gold hover:bg-brand-gold-light text-brand-charcoal text-[11px] sm:text-xs font-semibold uppercase tracking-wider sm:tracking-[0.2em] transition-all rounded-sm shadow-md"
               >
                 <span>Explore Bridal Collection</span>
                 <ArrowRight className="w-4 h-4" />

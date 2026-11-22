@@ -42,42 +42,42 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
   }, [location.pathname]);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-brand-cream/60 transition-all">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-brand-cream/60 transition-all w-full max-w-full overflow-hidden">
       {/* Top Announcement Bar */}
       {announcement && (
-        <div className="bg-brand-burgundy text-brand-ivory text-xs py-2 px-4 text-center font-medium tracking-wider flex items-center justify-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-brand-gold animate-pulse" />
-          <span>{announcement}</span>
+        <div className="bg-brand-burgundy text-brand-ivory text-[11px] sm:text-xs py-2 px-3 sm:px-4 text-center font-medium tracking-wide flex items-center justify-center gap-1.5 leading-snug w-full">
+          <Sparkles className="w-3.5 h-3.5 text-brand-gold animate-pulse shrink-0" />
+          <span className="truncate sm:overflow-visible sm:whitespace-normal">{announcement}</span>
         </div>
       )}
 
       {/* Main Navigation Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-center justify-between h-16 sm:h-20 w-full">
           {/* Mobile menu trigger */}
-          <div className="flex items-center lg:hidden">
+          <div className="flex items-center lg:hidden shrink-0">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors"
+              className="p-1.5 sm:p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors"
               aria-label="Toggle navigation menu"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
 
           {/* Brand Logo */}
-          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
+          <div className="flex-1 lg:flex-none flex justify-center lg:justify-start px-1 min-w-0">
             <Link to="/" className="flex flex-col items-center lg:items-start group">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 {/* Crescent Moon heritage emblem */}
-                <div className="w-6 h-6 rounded-full border-2 border-brand-burgundy flex items-center justify-center bg-brand-cream/40 group-hover:bg-brand-burgundy transition-all">
-                  <span className="text-brand-burgundy group-hover:text-brand-gold font-serif text-sm font-bold">☾</span>
+                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-brand-burgundy flex items-center justify-center bg-brand-cream/40 group-hover:bg-brand-burgundy transition-all shrink-0">
+                  <span className="text-brand-burgundy group-hover:text-brand-gold font-serif text-xs sm:text-sm font-bold">☾</span>
                 </div>
-                <span className="font-serif text-2xl sm:text-3xl tracking-[0.22em] text-brand-burgundy font-bold uppercase transition-colors">
+                <span className="font-serif text-lg sm:text-2xl lg:text-3xl tracking-[0.14em] sm:tracking-[0.22em] text-brand-burgundy font-bold uppercase transition-colors whitespace-nowrap">
                   CHANDRAKOR
                 </span>
               </div>
-              <span className="text-[9px] tracking-[0.35em] text-brand-warm-grey uppercase font-medium mt-0.5 ml-8">
+              <span className="text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.35em] text-brand-warm-grey uppercase font-medium mt-0.5 text-center lg:text-left lg:ml-7 whitespace-nowrap">
                 Heirloom Sarees • 1984
               </span>
             </Link>
@@ -135,24 +135,24 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
           </nav>
 
           {/* Right Action Icons */}
-          <div className="flex items-center space-x-3 sm:space-x-5">
+          <div className="flex items-center space-x-1 sm:space-x-3 lg:space-x-5 shrink-0">
             <button
               onClick={onOpenSearch}
-              className="p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50"
+              className="p-1.5 sm:p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50"
               aria-label="Search sarees"
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
 
             <Link
               to="/wishlist"
-              className="relative p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
+              className="relative p-1.5 sm:p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
               aria-label="View heirloom wishlist"
               title="My Wishlist"
             >
-              <Heart className="w-5 h-5" />
+              <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
               {totalWishlistItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-brand-burgundy text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                <span className="absolute -top-1 -right-1 bg-brand-burgundy text-white text-[9px] sm:text-[11px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-sm">
                   {totalWishlistItems}
                 </span>
               )}
@@ -160,12 +160,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
 
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
+              className="relative p-1.5 sm:p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
               aria-label="View shopping bag"
             >
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
               {summary.totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-brand-burgundy text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                <span className="absolute -top-1 -right-1 bg-brand-burgundy text-white text-[9px] sm:text-[11px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-sm">
                   {summary.totalItems}
                 </span>
               )}

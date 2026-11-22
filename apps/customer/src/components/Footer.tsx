@@ -4,10 +4,10 @@ import { ShieldCheck, Truck, RefreshCw, Award, Mail, Phone, MapPin } from 'lucid
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#1E1C19] text-[#EDE8DF] border-t border-brand-charcoal pt-16 pb-10">
+    <footer className="bg-[#1E1C19] text-[#EDE8DF] border-t border-brand-charcoal pt-12 sm:pt-16 pb-10 w-full max-w-full overflow-hidden">
       {/* Trust Highlights Strip */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 mb-12 border-b border-[#36322D]">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 mb-8 sm:mb-12 border-b border-[#36322D]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           <div className="flex items-center space-x-3.5">
             <div className="w-11 h-11 rounded-full bg-brand-burgundy/40 border border-brand-gold/30 flex items-center justify-center text-brand-gold">
               <Award className="w-5 h-5" />

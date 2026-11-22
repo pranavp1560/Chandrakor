@@ -3,13 +3,31 @@
 @tailwind utilities;
 
 @layer base {
-  html {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     scroll-behavior: smooth;
     font-family: 'Inter', system-ui, sans-serif;
   }
 
+  #root {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+  }
+
   h1, h2, h3, h4, .font-serif {
     font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  }
+
+  /* Prevent any image, video or canvas from forcing page width */
+  img, svg, video, canvas, audio, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
   }
 }
 

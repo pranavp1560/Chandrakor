@@ -23,7 +23,7 @@ export function App() {
     <CartProvider>
       <WishlistProvider>
         <BrowserRouter>
-          <div className="min-h-screen flex flex-col bg-brand-ivory text-brand-charcoal selection:bg-brand-burgundy selection:text-white">
+          <div className="min-h-screen flex flex-col bg-brand-ivory text-brand-charcoal selection:bg-brand-burgundy selection:text-white w-full max-w-full overflow-x-hidden">
             <Header onOpenSearch={() => setIsSearchOpen(true)} />
             <CartDrawer />
             <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
