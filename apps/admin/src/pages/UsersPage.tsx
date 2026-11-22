@@ -1,194 +1,258 @@
 import React, { useState, useEffect } from 'react';
 import {
   Users,
-  Search,
+  Shield,
+  ShieldCheck,
   Plus,
   Mail,
-  Phone,
-  MapPin,
-  ShoppingBag,
-  ExternalLink,
-  X,
+  Key,
   Check,
-  Calendar,
-  CreditCard,
-  Building,
-  UserCheck,
-  Eye,
+  X,
+  Lock,
+  Edit2,
+  Trash2,
+  AlertCircle,
   RefreshCw,
+  Sparkles,
 } from 'lucide-react';
 import { supabase } from '@chandrakor/supabase-client';
-import { Customer, CustomerAddress, Order } from '@chandrakor/shared-types';
-
-interface CustomerWithDetails extends Customer {
-  addresses?: CustomerAddress[];
-  orders?: Order[];
-  order_count?: number;
-  total_spent?: number;
-}
+import { AdminProfile, Role } from '@chandrakor/shared-types';
+import { useAuth } from '../context/AuthContext';
 
 export const UsersPage: React.FC = () => {
-  const [users, setUsers] = useState<CustomerWithDetails[]>([]);
+  const { admin: currentAdmin, isSuperAdmin } = useAuth();
+  const [users, setUsers] = useState<AdminProfile[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<'all' | 'buyers' | 'leads'>('all');
 
-  // Modal states
-  const [selectedUser, setSelectedUser] = useState<CustomerWithDetails | null>(null);
+  // Add User Modal State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedbackMsg, setFeedbackMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
-  // New User Form State
   const [newFullName, setNewFullName] = useState('');
-  const [newMobile, setNewMobile] = useState('');
   const [newEmail, setNewEmail] = useState('');
-  const [newAddressLine1, setNewAddressLine1] = useState('');
-  const [newAddressLine2, setNewAddressLine2] = useState('');
-  const [newCity, setNewCity] = useState('');
-  const [newState, setNewState] = useState('Maharashtra');
-  const [newPincode, setNewPincode] = useState('');
-  const [newAddressType, setNewAddressType] = useState<'home' | 'office'>('home');
+  const [newPassword, setNewPassword] = useState('');
+  const [newRoleId, setNewRoleId] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const fetchUsers = async () => {
+  // Edit User Modal State
+  const [editingUser, setEditingUser] = useState<AdminProfile | null>(null);
+  const [editRoleId, setEditRoleId] = useState('');
+  const [editIsActive, setEditIsActive] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // Feedback Notification
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const fetchStaffUsers = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('customers')
-        .select(`
-          *,
-          addresses:customer_addresses(*),
-          orders:orders(id, order_number, total_amount, status, created_at, payment_method)
-        `)
-        .order('created_at', { ascending: false });
+      // 1. Fetch staff profiles with joined roles
+      const { data: adminData, error: adminErr } = await supabase
+        .from('admin_profiles')
+        .select('*, role:roles(*)')
+        .order('created_at', { ascending: true });
 
-      if (error) {
-        console.error('Error fetching customers:', error);
-      } else if (data) {
-        const enhancedUsers: CustomerWithDetails[] = data.map((cust: any) => {
-          const orders = cust.orders || [];
-          const totalSpent = orders.reduce(
-            (sum: number, o: any) => sum + (o.status !== 'cancelled' ? Number(o.total_amount || 0) : 0),
-            0
-          );
-          return {
-            ...cust,
-            orders,
-            order_count: orders.length,
-            total_spent: totalSpent,
-          };
-        });
-        setUsers(enhancedUsers);
+      if (adminErr) {
+        console.error('Error fetching admin profiles:', adminErr);
+      } else if (adminData) {
+        setUsers(adminData as AdminProfile[]);
+      }
+
+      // 2. Fetch roles
+      const { data: rolesData, error: roleErr } = await supabase
+        .from('roles')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (roleErr) {
+        console.error('Error fetching roles:', roleErr);
+      } else if (rolesData) {
+        setRoles(rolesData as Role[]);
+        if (rolesData.length > 0 && !newRoleId) {
+          setNewRoleId(rolesData[0].id);
+        }
       }
     } catch (e) {
-      console.error('Failed to load users:', e);
+      console.error('Failed to load users data', e);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchStaffUsers();
   }, []);
 
+  // Handle Add New Staff User
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newFullName.trim() || !newMobile.trim()) {
-      alert('Please provide full name and mobile number.');
+    if (!newFullName.trim() || !newEmail.trim() || !newPassword) {
+      setFeedback({ type: 'error', message: 'All fields (Name, Email, Password, Role) are required.' });
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setFeedback({ type: 'error', message: 'Password must be at least 6 characters.' });
       return;
     }
 
     setIsSubmitting(true);
     try {
-      // 1. Insert customer
-      const { data: customerData, error: custErr } = await supabase
-        .from('customers')
-        .insert({
-          full_name: newFullName.trim(),
-          mobile: newMobile.trim(),
-          email: newEmail.trim() || null,
-        })
-        .select()
-        .single();
+      const { data, error } = await supabase.rpc('create_staff_user', {
+        p_email: newEmail.trim().toLowerCase(),
+        p_password: newPassword,
+        p_full_name: newFullName.trim(),
+        p_role_id: newRoleId,
+      });
 
-      if (custErr || !customerData) {
-        throw new Error(custErr?.message || 'Failed to create customer');
+      if (error) {
+        throw new Error(error.message);
       }
 
-      // 2. If address provided, insert address
-      if (newAddressLine1.trim() && newCity.trim() && newPincode.trim()) {
-        await supabase.from('customer_addresses').insert({
-          customer_id: customerData.id,
-          full_name: newFullName.trim(),
-          mobile: newMobile.trim(),
-          address_line_1: newAddressLine1.trim(),
-          address_line_2: newAddressLine2.trim() || null,
-          city: newCity.trim(),
-          state: newState.trim(),
-          pincode: newPincode.trim(),
-          address_type: newAddressType,
-        });
-      }
-
-      setFeedbackMsg({ type: 'success', text: `User "${newFullName}" successfully registered.` });
+      setFeedback({
+        type: 'success',
+        message: `Staff user "${newFullName}" provisioned successfully with role access.`,
+      });
       setIsAddModalOpen(false);
 
       // Reset form
       setNewFullName('');
-      setNewMobile('');
       setNewEmail('');
-      setNewAddressLine1('');
-      setNewAddressLine2('');
-      setNewCity('');
-      setNewPincode('');
+      setNewPassword('');
 
-      await fetchUsers();
-      setTimeout(() => setFeedbackMsg(null), 4000);
+      await fetchStaffUsers();
+      setTimeout(() => setFeedback(null), 5000);
     } catch (err: any) {
-      setFeedbackMsg({ type: 'error', text: err.message || 'Failed to register user.' });
+      setFeedback({ type: 'error', message: err.message || 'Failed to create staff user.' });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Filtered users
-  const filteredUsers = users.filter((u) => {
-    const matchesSearch =
-      u.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.mobile.includes(searchQuery) ||
-      (u.email && u.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (u.addresses && u.addresses.some((a) => a.city.toLowerCase().includes(searchQuery.toLowerCase())));
+  // Open Edit Modal
+  const openEditModal = (user: AdminProfile) => {
+    setEditingUser(user);
+    setEditRoleId(user.role_id);
+    setEditIsActive(user.is_active);
+  };
 
-    if (!matchesSearch) return false;
+  // Handle Update Staff User
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
 
-    if (filterType === 'buyers') return (u.order_count || 0) > 0;
-    if (filterType === 'leads') return (u.order_count || 0) === 0;
-    return true;
-  });
+    setIsUpdating(true);
+    try {
+      const { error } = await supabase
+        .from('admin_profiles')
+        .update({
+          role_id: editRoleId,
+          is_active: editIsActive,
+        })
+        .eq('id', editingUser.id);
 
-  // Calculate high-level metrics
-  const totalCustomers = users.length;
-  const activeBuyers = users.filter((u) => (u.order_count || 0) > 0).length;
-  const totalRevenue = users.reduce((acc, u) => acc + (u.total_spent || 0), 0);
-  const avgCustomerLTV = totalCustomers > 0 ? Math.round(totalRevenue / totalCustomers) : 0;
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      setFeedback({
+        type: 'success',
+        message: `Staff user "${editingUser.full_name}" updated successfully.`,
+      });
+      setEditingUser(null);
+      await fetchStaffUsers();
+      setTimeout(() => setFeedback(null), 5000);
+    } catch (err: any) {
+      setFeedback({ type: 'error', message: err.message || 'Failed to update staff user.' });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  // Handle Toggle Active/Suspended
+  const handleToggleStatus = async (user: AdminProfile) => {
+    if (user.id === currentAdmin?.id) {
+      alert('You cannot suspend your own administrative session.');
+      return;
+    }
+
+    const nextStatus = !user.is_active;
+    const confirmMsg = nextStatus
+      ? `Re-activate staff account for "${user.full_name}"?`
+      : `Suspend staff account for "${user.full_name}"? They will be unable to log in.`;
+
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      const { error } = await supabase
+        .from('admin_profiles')
+        .update({ is_active: nextStatus })
+        .eq('id', user.id);
+
+      if (error) throw error;
+      setFeedback({
+        type: 'success',
+        message: `Account status updated for ${user.full_name}.`,
+      });
+      await fetchStaffUsers();
+      setTimeout(() => setFeedback(null), 4000);
+    } catch (err: any) {
+      setFeedback({ type: 'error', message: err.message || 'Failed to update user status.' });
+    }
+  };
+
+  // Handle Delete/Remove Staff
+  const handleDeleteUser = async (user: AdminProfile) => {
+    if (user.id === currentAdmin?.id) {
+      alert('You cannot remove your own administrator account.');
+      return;
+    }
+
+    if (
+      !window.confirm(
+        `Are you sure you want to revoke access and remove staff user "${user.full_name}" (${user.email})?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('admin_profiles').delete().eq('id', user.id);
+      if (error) throw error;
+
+      setFeedback({
+        type: 'success',
+        message: `Staff user "${user.full_name}" access has been revoked.`,
+      });
+      await fetchStaffUsers();
+      setTimeout(() => setFeedback(null), 4000);
+    } catch (err: any) {
+      setFeedback({ type: 'error', message: err.message || 'Failed to remove user.' });
+    }
+  };
+
+  // Metrics
+  const totalStaff = users.length;
+  const superAdminCount = users.filter((u) => u.role?.name === 'Super Admin').length;
+  const activeStaffCount = users.filter((u) => u.is_active).length;
+  const managerCount = users.filter((u) => u.role?.name && u.role.name !== 'Super Admin').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
             <Users className="w-6 h-6 text-brand-burgundy" />
-            <span>Users & Customers Management</span>
+            <span>Staff Users & Access Control (RBAC)</span>
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Directory of registered clients, addresses, order history, and customer lifetime value (LTV)
+            Manage administrative personnel, assign operational roles, and configure system permissions
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={fetchUsers}
+            onClick={fetchStaffUsers}
             disabled={loading}
             className="p-2 border border-slate-200 text-slate-600 hover:text-slate-900 rounded-md hover:bg-slate-50 transition-colors"
             title="Refresh Users"
@@ -200,25 +264,25 @@ export const UsersPage: React.FC = () => {
             className="px-4 py-2 bg-brand-burgundy hover:bg-brand-burgundy-dark text-white text-xs font-semibold uppercase tracking-wider rounded-md shadow-sm transition-all flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
-            <span>Register New User</span>
+            <span>Add New User</span>
           </button>
         </div>
       </div>
 
       {/* Toast Feedback */}
-      {feedbackMsg && (
+      {feedback && (
         <div
-          className={`p-3.5 rounded-md text-xs font-medium flex items-center justify-between border ${
-            feedbackMsg.type === 'success'
+          className={`p-4 rounded-md text-xs font-medium flex items-center justify-between border ${
+            feedback.type === 'success'
               ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
               : 'bg-red-50 border-red-200 text-red-800'
           }`}
         >
           <div className="flex items-center gap-2">
-            {feedbackMsg.type === 'success' ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
-            <span>{feedbackMsg.text}</span>
+            {feedback.type === 'success' ? <Check className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+            <span>{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedbackMsg(null)} className="underline font-bold text-xs">
+          <button onClick={() => setFeedback(null)} className="underline font-bold text-xs">
             Dismiss
           </button>
         </div>
@@ -228,101 +292,78 @@ export const UsersPage: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
-            Total Registered Users
+            Total Staff Users
           </span>
-          <span className="text-2xl font-bold text-slate-900">{totalCustomers}</span>
-          <span className="text-[10px] text-emerald-600 font-medium block mt-1">Direct Client Database</span>
+          <span className="text-2xl font-bold text-slate-900">{totalStaff}</span>
+          <span className="text-[10px] text-slate-500 font-medium block mt-1">Provisioned Accounts</span>
         </div>
 
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
-            Active Shoppers
+            Super Admins
           </span>
-          <span className="text-2xl font-bold text-slate-900">{activeBuyers}</span>
-          <span className="text-[10px] text-brand-burgundy font-medium block mt-1">
-            {totalCustomers > 0 ? Math.round((activeBuyers / totalCustomers) * 100) : 0}% Conversion Rate
-          </span>
+          <span className="text-2xl font-bold text-brand-burgundy">{superAdminCount}</span>
+          <span className="text-[10px] text-brand-burgundy font-medium block mt-1">Full System Authority</span>
         </div>
 
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
-            Lifetime Revenue
+            Department Managers
           </span>
-          <span className="text-2xl font-bold text-brand-burgundy">
-            ₹{totalRevenue.toLocaleString('en-IN')}
-          </span>
-          <span className="text-[10px] text-slate-500 font-medium block mt-1">Cumulative Delivered/Paid</span>
+          <span className="text-2xl font-bold text-slate-900">{managerCount}</span>
+          <span className="text-[10px] text-slate-500 font-medium block mt-1">Products, Orders, Marketing</span>
         </div>
 
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
-            Average LTV
+            Active Accounts
           </span>
-          <span className="text-2xl font-bold text-slate-900">
-            ₹{avgCustomerLTV.toLocaleString('en-IN')}
-          </span>
-          <span className="text-[10px] text-slate-500 font-medium block mt-1">Revenue per Customer</span>
+          <span className="text-2xl font-bold text-emerald-700">{activeStaffCount}</span>
+          <span className="text-[10px] text-emerald-600 font-medium block mt-1">Authorized for Login</span>
         </div>
       </div>
 
-      {/* Search & Filters */}
-      <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search by name, phone, email, city..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-md text-xs focus:ring-1 focus:ring-brand-burgundy focus:border-brand-burgundy outline-none"
-          />
-        </div>
-
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <span className="text-xs text-slate-500">Filter:</span>
-          <select
-            value={filterType}
-            onChange={(e: any) => setFilterType(e.target.value)}
-            className="border border-slate-200 rounded-md px-3 py-1.5 text-xs text-slate-700 bg-white outline-none focus:ring-1 focus:ring-brand-burgundy"
-          >
-            <option value="all">All Users ({users.length})</option>
-            <option value="buyers">Buyers with Orders ({activeBuyers})</option>
-            <option value="leads">New Leads (0 Orders) ({totalCustomers - activeBuyers})</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Users Table */}
+      {/* Active Staff Users Table */}
       <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-5 border-b border-slate-200 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-bold text-slate-900">Authorized Personnel Directory</h2>
+            <p className="text-xs text-slate-500">
+              Staff members authenticated to access Chandrakor administration modules
+            </p>
+          </div>
+          <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">
+            {users.length} Active Accounts
+          </span>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
               <tr>
-                <th className="py-3 px-4">User Details</th>
-                <th className="py-3 px-4">Mobile / Contact</th>
-                <th className="py-3 px-4">Default City</th>
-                <th className="py-3 px-4 text-center">Orders</th>
-                <th className="py-3 px-4 text-right">Lifetime Spend</th>
-                <th className="py-3 px-4">Registration</th>
+                <th className="py-3 px-4">User Name</th>
+                <th className="py-3 px-4">Login Email</th>
+                <th className="py-3 px-4">Assigned Role</th>
+                <th className="py-3 px-4 text-center">Status</th>
+                <th className="py-3 px-4">Provisioned Date</th>
                 <th className="py-3 px-4 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-12 text-slate-400">
-                    Loading Chandrakor users database...
+                  <td colSpan={6} className="text-center py-12 text-slate-400">
+                    Loading personnel accounts...
                   </td>
                 </tr>
-              ) : filteredUsers.length === 0 ? (
+              ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-12 text-slate-500">
-                    No users matching criteria.
+                  <td colSpan={6} className="text-center py-12 text-slate-500">
+                    No staff users found.
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((user) => {
-                  const defaultAddress = user.addresses?.[0];
+                users.map((user) => {
                   const initials = user.full_name
                     .split(' ')
                     .map((n) => n[0])
@@ -330,69 +371,67 @@ export const UsersPage: React.FC = () => {
                     .substring(0, 2)
                     .toUpperCase();
 
+                  const isCurrentUser = user.id === currentAdmin?.id;
+
                   return (
                     <tr key={user.id} className="hover:bg-slate-50 transition-colors">
-                      {/* Name & Avatar */}
+                      {/* Name */}
                       <td className="py-3 px-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2.5">
                           <div className="w-8 h-8 rounded-full bg-brand-burgundy/10 text-brand-burgundy font-bold flex items-center justify-center shrink-0 text-xs">
                             {initials || 'U'}
                           </div>
                           <div>
-                            <span className="font-semibold text-slate-900 block leading-tight">
+                            <span className="font-semibold text-slate-900 flex items-center gap-1.5">
                               {user.full_name}
+                              {isCurrentUser && (
+                                <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-normal">
+                                  You
+                                </span>
+                              )}
                             </span>
-                            <span className="text-[11px] text-slate-400">ID: {user.id.substring(0, 8)}...</span>
+                            <span className="text-[10px] text-slate-400">UID: {user.id.substring(0, 8)}...</span>
                           </div>
                         </div>
                       </td>
 
-                      {/* Contact Info */}
-                      <td className="py-3 px-4 space-y-0.5">
-                        <div className="flex items-center gap-1.5 text-slate-800 font-medium">
-                          <Phone className="w-3.5 h-3.5 text-slate-400" />
-                          <span>{user.mobile}</span>
-                        </div>
-                        {user.email ? (
-                          <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
-                            <Mail className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{user.email}</span>
-                          </div>
-                        ) : (
-                          <span className="text-[10px] text-slate-400 italic">No email linked</span>
-                        )}
+                      {/* Email */}
+                      <td className="py-3 px-4 font-mono text-slate-700 font-medium">
+                        {user.email}
                       </td>
 
-                      {/* City / State */}
+                      {/* Assigned Role */}
                       <td className="py-3 px-4">
-                        {defaultAddress ? (
-                          <div className="flex items-center gap-1.5 text-slate-700">
-                            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                            <span>
-                              {defaultAddress.city}, {defaultAddress.state}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-slate-400 italic">No address on file</span>
-                        )}
-                      </td>
-
-                      {/* Orders Count */}
-                      <td className="py-3 px-4 text-center">
                         <span
-                          className={`inline-block px-2 py-0.5 rounded-full font-semibold text-[11px] ${
-                            (user.order_count || 0) > 0
-                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                              : 'bg-slate-100 text-slate-500'
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded font-bold text-[11px] ${
+                            user.role?.name === 'Super Admin'
+                              ? 'bg-brand-burgundy text-white'
+                              : user.role?.name === 'Product Manager'
+                              ? 'bg-amber-100 text-amber-900'
+                              : user.role?.name === 'Order Manager'
+                              ? 'bg-blue-100 text-blue-900'
+                              : 'bg-slate-100 text-slate-800'
                           }`}
                         >
-                          {user.order_count || 0} order(s)
+                          <ShieldCheck className="w-3 h-3" />
+                          <span>{user.role?.name || 'Administrator'}</span>
                         </span>
                       </td>
 
-                      {/* Lifetime Spend */}
-                      <td className="py-3 px-4 text-right font-bold text-slate-900">
-                        ₹{(user.total_spent || 0).toLocaleString('en-IN')}
+                      {/* Status */}
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleToggleStatus(user)}
+                          disabled={isCurrentUser}
+                          className={`px-2.5 py-0.5 rounded font-semibold text-[10px] uppercase transition-all ${
+                            user.is_active
+                              ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-red-100 text-red-800 hover:bg-red-200'
+                          } ${isCurrentUser ? 'cursor-default' : 'cursor-pointer'}`}
+                          title={isCurrentUser ? 'Your active session' : 'Click to toggle active/suspended'}
+                        >
+                          {user.is_active ? 'Active' : 'Suspended'}
+                        </button>
                       </td>
 
                       {/* Date */}
@@ -406,13 +445,24 @@ export const UsersPage: React.FC = () => {
 
                       {/* Actions */}
                       <td className="py-3 px-4 text-center">
-                        <button
-                          onClick={() => setSelectedUser(user)}
-                          className="px-2.5 py-1 text-xs border border-slate-200 hover:border-brand-burgundy text-slate-700 hover:text-brand-burgundy rounded transition-colors inline-flex items-center gap-1"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>View Profile</span>
-                        </button>
+                        <div className="flex items-center justify-center gap-1.5">
+                          <button
+                            onClick={() => openEditModal(user)}
+                            className="p-1.5 border border-slate-200 hover:border-brand-burgundy text-slate-600 hover:text-brand-burgundy rounded transition-colors"
+                            title="Edit Role / Status"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          {!isCurrentUser && (
+                            <button
+                              onClick={() => handleDeleteUser(user)}
+                              className="p-1.5 border border-slate-200 hover:border-red-300 text-slate-400 hover:text-red-700 rounded transition-colors"
+                              title="Revoke Access"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );
@@ -423,172 +473,50 @@ export const UsersPage: React.FC = () => {
         </div>
       </div>
 
-      {/* User Details Modal */}
-      {selectedUser && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="p-5 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white z-10">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-burgundy text-white font-bold flex items-center justify-center text-sm">
-                  {selectedUser.full_name.substring(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-base">{selectedUser.full_name}</h3>
-                  <span className="text-xs text-slate-400">Customer ID: {selectedUser.id}</span>
-                </div>
-              </div>
-              <button
-                onClick={() => setSelectedUser(null)}
-                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      {/* Role-Based Access Control Architecture Reference */}
+      <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6 space-y-4">
+        <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <Shield className="w-4 h-4 text-brand-burgundy" />
+          <span>Role Permissions & Access Matrix</span>
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div className="p-4 border border-slate-200 rounded-md space-y-2 bg-slate-50/50">
+            <span className="font-bold text-brand-burgundy uppercase block">
+              Super Admin
+            </span>
+            <p className="text-slate-600 leading-relaxed">
+              Unrestricted full access across Catalog, Inventory, Orders, Customers, Marketing Banners, Settings, and Staff User Management.
+            </p>
+          </div>
 
-            {/* Modal Content */}
-            <div className="p-6 space-y-6">
-              {/* Contact Summary Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs">
-                <div>
-                  <span className="text-slate-400 block mb-0.5">Mobile Phone</span>
-                  <span className="font-semibold text-slate-900 flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-brand-burgundy" />
-                    {selectedUser.mobile}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block mb-0.5">Email Address</span>
-                  <span className="font-semibold text-slate-900 flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-brand-burgundy" />
-                    {selectedUser.email || 'None Provided'}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block mb-0.5">Customer Since</span>
-                  <span className="font-semibold text-slate-900 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-brand-burgundy" />
-                    {new Date(selectedUser.created_at).toLocaleDateString('en-IN')}
-                  </span>
-                </div>
-              </div>
+          <div className="p-4 border border-slate-200 rounded-md space-y-2 bg-slate-50/50">
+            <span className="font-bold text-slate-900 uppercase block">
+              Product & Inventory Manager
+            </span>
+            <p className="text-slate-600 leading-relaxed">
+              Product creation & editing, category management, inventory level adjustments, and saree collections curation.
+            </p>
+          </div>
 
-              {/* Saved Addresses */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-brand-burgundy" />
-                  <span>Saved Addresses ({selectedUser.addresses?.length || 0})</span>
-                </h4>
-                {selectedUser.addresses && selectedUser.addresses.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {selectedUser.addresses.map((addr) => (
-                      <div
-                        key={addr.id}
-                        className="p-3 bg-white border border-slate-200 rounded-md text-xs space-y-1"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold text-slate-900">{addr.full_name}</span>
-                          <span className="text-[10px] uppercase bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-semibold">
-                            {addr.address_type}
-                          </span>
-                        </div>
-                        <p className="text-slate-600 leading-relaxed">
-                          {addr.address_line_1}
-                          {addr.address_line_2 && `, ${addr.address_line_2}`}
-                          <br />
-                          {addr.city}, {addr.state} - {addr.pincode}
-                        </p>
-                        <span className="text-[11px] text-slate-500 block pt-1">Phone: {addr.mobile}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="p-4 bg-slate-50 border border-slate-200 rounded text-center text-xs text-slate-400">
-                    No delivery addresses stored yet.
-                  </div>
-                )}
-              </div>
-
-              {/* Order History */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
-                  <ShoppingBag className="w-4 h-4 text-brand-burgundy" />
-                  <span>Order History ({selectedUser.orders?.length || 0})</span>
-                </h4>
-                {selectedUser.orders && selectedUser.orders.length > 0 ? (
-                  <div className="border border-slate-200 rounded-lg overflow-hidden">
-                    <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-semibold">
-                        <tr>
-                          <th className="py-2.5 px-3">Order Number</th>
-                          <th className="py-2.5 px-3">Date</th>
-                          <th className="py-2.5 px-3">Status</th>
-                          <th className="py-2.5 px-3">Method</th>
-                          <th className="py-2.5 px-3 text-right">Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {selectedUser.orders.map((ord: any) => (
-                          <tr key={ord.id} className="hover:bg-slate-50">
-                            <td className="py-2.5 px-3 font-semibold text-slate-900">
-                              #{ord.order_number}
-                            </td>
-                            <td className="py-2.5 px-3 text-slate-500">
-                              {new Date(ord.created_at).toLocaleDateString('en-IN')}
-                            </td>
-                            <td className="py-2.5 px-3">
-                              <span
-                                className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
-                                  ord.status === 'delivered'
-                                    ? 'bg-emerald-50 text-emerald-800'
-                                    : ord.status === 'cancelled'
-                                    ? 'bg-red-50 text-red-800'
-                                    : 'bg-amber-50 text-amber-800'
-                                }`}
-                              >
-                                {ord.status}
-                              </span>
-                            </td>
-                            <td className="py-2.5 px-3 text-slate-600 uppercase text-[10px]">
-                              {ord.payment_method || 'Online'}
-                            </td>
-                            <td className="py-2.5 px-3 text-right font-bold text-slate-900">
-                              ₹{Number(ord.total_amount).toLocaleString('en-IN')}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="p-4 bg-slate-50 border border-slate-200 rounded text-center text-xs text-slate-400">
-                    This customer has not placed any orders yet.
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
-              <button
-                onClick={() => setSelectedUser(null)}
-                className="px-4 py-2 border border-slate-200 rounded text-xs font-semibold text-slate-700 hover:bg-white transition-colors"
-              >
-                Close
-              </button>
-            </div>
+          <div className="p-4 border border-slate-200 rounded-md space-y-2 bg-slate-50/50">
+            <span className="font-bold text-slate-900 uppercase block">
+              Order & Fulfillment Manager
+            </span>
+            <p className="text-slate-600 leading-relaxed">
+              Customer order processing, dispatch status updates, shipment tracking numbers, and invoice generation.
+            </p>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Add New User Modal */}
+      {/* Add New Staff User Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xl w-full max-w-lg overflow-hidden">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-xl w-full max-w-md overflow-hidden">
             <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
               <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                <UserCheck className="w-4 h-4 text-brand-burgundy" />
-                <span>Register New Customer / Client</span>
+                <Plus className="w-4 h-4 text-brand-burgundy" />
+                <span>Add New Staff User</span>
               </h3>
               <button
                 onClick={() => setIsAddModalOpen(false)}
@@ -599,81 +527,63 @@ export const UsersPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleCreateUser} className="p-6 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Ananya Roy"
-                    value={newFullName}
-                    onChange={(e) => setNewFullName(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Mobile Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="10-digit mobile"
-                    value={newMobile}
-                    onChange={(e) => setNewMobile(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Ramesh Kulkarni"
+                  value={newFullName}
+                  onChange={(e) => setNewFullName(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
+                />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Email Address
+                  Email Address *
                 </label>
                 <input
                   type="email"
-                  placeholder="ananya@example.com (optional)"
+                  required
+                  placeholder="staff@chandrakor.com"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
                 />
               </div>
 
-              <div className="pt-2 border-t border-slate-100">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
-                  Initial Shipping Address (Optional)
-                </span>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Temporary Login Password *
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="Min. 6 characters"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
+                />
+              </div>
 
-                <div className="space-y-3">
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Address Line 1 (Flat, House, Building)"
-                      value={newAddressLine1}
-                      onChange={(e) => setNewAddressLine1(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      placeholder="City (e.g. Mumbai)"
-                      value={newCity}
-                      onChange={(e) => setNewCity(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Pincode"
-                      value={newPincode}
-                      onChange={(e) => setNewPincode(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded text-xs focus:ring-1 focus:ring-brand-burgundy outline-none"
-                    />
-                  </div>
-                </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Assign Role *
+                </label>
+                <select
+                  value={newRoleId}
+                  onChange={(e) => setNewRoleId(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-xs bg-white text-slate-800 focus:ring-1 focus:ring-brand-burgundy outline-none"
+                >
+                  {roles.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name} — {r.description || 'Module Access'}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="pt-4 border-t border-slate-200 flex items-center justify-end gap-2">
@@ -689,7 +599,103 @@ export const UsersPage: React.FC = () => {
                   disabled={isSubmitting}
                   className="px-5 py-2 bg-brand-burgundy hover:bg-brand-burgundy-dark text-white rounded text-xs font-semibold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Registering...' : 'Register User'}
+                  {isSubmitting ? 'Creating User...' : 'Provision User'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Staff User Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-xl w-full max-w-md overflow-hidden">
+            <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <Edit2 className="w-4 h-4 text-brand-burgundy" />
+                <span>Edit Staff Member: {editingUser.full_name}</span>
+              </h3>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="p-1 text-slate-400 hover:text-slate-700 rounded-full"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateUser} className="p-6 space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  User Email
+                </label>
+                <input
+                  type="text"
+                  disabled
+                  value={editingUser.email}
+                  className="w-full px-3 py-2 border border-slate-200 bg-slate-50 text-slate-500 rounded text-xs cursor-not-allowed"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Assigned Role
+                </label>
+                <select
+                  value={editRoleId}
+                  onChange={(e) => setEditRoleId(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-xs bg-white text-slate-800 focus:ring-1 focus:ring-brand-burgundy outline-none"
+                >
+                  {roles.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Account Status
+                </label>
+                <div className="flex items-center gap-4 mt-2">
+                  <label className="flex items-center gap-2 text-xs font-medium text-slate-800 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="editStatus"
+                      checked={editIsActive}
+                      onChange={() => setEditIsActive(true)}
+                      className="text-brand-burgundy focus:ring-brand-burgundy"
+                    />
+                    <span>Active (Allowed Login)</span>
+                  </label>
+                  <label className="flex items-center gap-2 text-xs font-medium text-slate-800 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="editStatus"
+                      checked={!editIsActive}
+                      onChange={() => setEditIsActive(false)}
+                      className="text-brand-burgundy focus:ring-brand-burgundy"
+                    />
+                    <span>Suspended</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-200 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-4 py-2 border border-slate-200 rounded text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isUpdating}
+                  className="px-5 py-2 bg-brand-burgundy hover:bg-brand-burgundy-dark text-white rounded text-xs font-semibold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50"
+                >
+                  {isUpdating ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>

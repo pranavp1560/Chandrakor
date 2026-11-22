@@ -35,7 +35,6 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     { label: 'Coupons & Offers', path: '/coupons', icon: BookmarkCheck },
     { label: 'Collections', path: '/collections', icon: BookmarkCheck },
     { label: 'Homepage Banners', path: '/banners', icon: ImageIcon },
-    { label: 'Staff & Roles', path: '/admins', icon: ShieldCheck },
     { label: 'Store Settings', path: '/settings', icon: Settings },
   ];
 

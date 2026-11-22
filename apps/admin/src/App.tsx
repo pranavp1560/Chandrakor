@@ -115,14 +115,7 @@ export function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/admins"
-            element={
-              <ProtectedRoute>
-                <AdminsPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/admins" element={<Navigate to="/users" replace />} />
           <Route
             path="/settings"
             element={
