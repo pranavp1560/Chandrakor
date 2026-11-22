@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Eye, Sparkles } from 'lucide-react';
+import { ShoppingBag, Eye, Sparkles, Heart } from 'lucide-react';
 import { Product } from '@chandrakor/shared-types';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +11,8 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const inWishlist = isInWishlist(product.id);
 
   const primaryImage =
     product.images?.find((img) => img.is_primary)?.image_url ||
@@ -33,6 +36,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     e.stopPropagation();
     if (isOutOfStock) return;
     await addToCart(product, 1);
+  };
+
+  const handleWishlistToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await toggleWishlist(product);
   };
 
   return (
@@ -63,6 +72,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {discountPercent}% OFF
             </span>
           )}
+        </div>
+
+        {/* Wishlist Button */}
+        <div className="absolute top-2.5 right-2.5 z-20">
+          <button
+            onClick={handleWishlistToggle}
+            className={`p-2 rounded-full transition-all duration-200 shadow-sm ${
+              inWishlist
+                ? 'bg-brand-burgundy text-white hover:bg-brand-burgundy-dark scale-105'
+                : 'bg-white/90 text-brand-charcoal hover:text-brand-burgundy hover:bg-white backdrop-blur-sm'
+            }`}
+            aria-label={inWishlist ? 'Remove from wishlist' : 'Save to wishlist'}
+            title={inWishlist ? 'Remove from wishlist' : 'Save to wishlist'}
+          >
+            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current text-white' : ''}`} />
+          </button>
         </div>
 
         {/* Stock status indicator badge */}

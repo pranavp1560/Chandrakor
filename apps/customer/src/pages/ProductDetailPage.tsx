@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ShoppingBag, ShieldCheck, Truck, Award, Check, Sparkles, ArrowRight } from 'lucide-react';
+import { ShoppingBag, ShieldCheck, Truck, Award, Check, Sparkles, ArrowRight, Heart } from 'lucide-react';
 import { Product } from '@chandrakor/shared-types';
 import { supabase } from '@chandrakor/supabase-client';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { ProductCard } from '../components/ProductCard';
 
 export const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>('');
@@ -138,6 +140,18 @@ export const ProductDetailPage: React.FC = () => {
                 Heirloom Weave
               </span>
             )}
+            <button
+              onClick={() => toggleWishlist(product)}
+              className={`absolute top-4 right-4 z-10 p-2.5 rounded-full transition-all duration-200 shadow-md ${
+                isInWishlist(product.id)
+                  ? 'bg-brand-burgundy text-white hover:bg-brand-burgundy-dark scale-105'
+                  : 'bg-white/90 text-brand-charcoal hover:text-brand-burgundy hover:bg-white backdrop-blur-sm'
+              }`}
+              aria-label={isInWishlist(product.id) ? 'Remove from wishlist' : 'Save to wishlist'}
+              title={isInWishlist(product.id) ? 'In Wishlist' : 'Save to Wishlist'}
+            >
+              <Heart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-current text-white' : ''}`} />
+            </button>
           </div>
 
           {/* Thumbnails row */}
@@ -265,9 +279,9 @@ export const ProductDetailPage: React.FC = () => {
 
           {/* Action Row: Quantity & Add to Cart */}
           <div className="pt-4 border-t border-brand-cream/80 space-y-4">
-            {!isOutOfStock && (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border border-brand-cream bg-white rounded-sm">
+            {!isOutOfStock ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center border border-brand-cream bg-white rounded-sm shrink-0">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="px-3 py-2 text-brand-charcoal hover:text-brand-burgundy"
@@ -291,6 +305,36 @@ export const ProductDetailPage: React.FC = () => {
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>{isAdding ? 'Adding Heirloom...' : 'Add to Bag'}</span>
+                </button>
+
+                <button
+                  onClick={() => toggleWishlist(product)}
+                  className={`py-3.5 px-4 border rounded-sm transition-all flex items-center justify-center gap-1.5 shrink-0 ${
+                    isInWishlist(product.id)
+                      ? 'border-brand-burgundy bg-brand-burgundy/10 text-brand-burgundy'
+                      : 'border-brand-cream hover:border-brand-burgundy bg-white text-brand-charcoal hover:text-brand-burgundy'
+                  }`}
+                  aria-label={isInWishlist(product.id) ? 'Remove from wishlist' : 'Save to wishlist'}
+                  title={isInWishlist(product.id) ? 'Remove from wishlist' : 'Save to wishlist'}
+                >
+                  <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current text-brand-burgundy' : ''}`} />
+                  <span className="text-xs font-medium hidden sm:inline">
+                    {isInWishlist(product.id) ? 'Wishlisted' : 'Wishlist'}
+                  </span>
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  onClick={() => toggleWishlist(product)}
+                  className={`w-full py-3.5 px-6 border text-xs font-semibold uppercase tracking-wider rounded-sm transition-all flex items-center justify-center gap-2 ${
+                    isInWishlist(product.id)
+                      ? 'border-brand-burgundy bg-brand-burgundy/10 text-brand-burgundy'
+                      : 'border-brand-cream bg-white text-brand-charcoal hover:border-brand-burgundy hover:text-brand-burgundy'
+                  }`}
+                >
+                  <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current text-brand-burgundy' : ''}`} />
+                  <span>{isInWishlist(product.id) ? 'Saved to Heirloom Wishlist' : 'Save to Wishlist (Notify When Re-loomed)'}</span>
                 </button>
               </div>
             )}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X, Sparkles } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, Sparkles, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { supabase } from '@chandrakor/supabase-client';
 
 interface HeaderProps {
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
   const { summary, setIsCartOpen } = useCart();
+  const { totalWishlistItems } = useWishlist();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [announcement, setAnnouncement] = useState<string>(
     'Complimentary Pan-India Express Shipping & Insured Heirloom Delivery on all orders'
@@ -142,6 +144,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
               <Search className="w-5 h-5" />
             </button>
 
+            <Link
+              to="/wishlist"
+              className="relative p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
+              aria-label="View heirloom wishlist"
+              title="My Wishlist"
+            >
+              <Heart className="w-5 h-5" />
+              {totalWishlistItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-brand-burgundy text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                  {totalWishlistItems}
+                </span>
+              )}
+            </Link>
+
             <button
               onClick={() => setIsCartOpen(true)}
               className="relative p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
@@ -208,6 +224,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
             className="block py-2 text-base font-medium text-brand-charcoal border-b border-slate-100"
           >
             About Chandrakor Heritage
+          </Link>
+          <Link
+            to="/wishlist"
+            className="flex items-center justify-between py-2 text-base font-medium text-brand-charcoal border-b border-slate-100"
+          >
+            <span className="flex items-center gap-2">
+              <Heart className="w-4 h-4 text-brand-burgundy" />
+              <span>My Wishlist</span>
+            </span>
+            {totalWishlistItems > 0 && (
+              <span className="bg-brand-burgundy text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                {totalWishlistItems}
+              </span>
+            )}
           </Link>
           <Link
             to="/track-order"

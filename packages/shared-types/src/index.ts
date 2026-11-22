@@ -484,6 +484,16 @@ export interface NotificationLog {
   created_at: string;
 }
 
+export interface CustomerWishlist {
+  id: string;
+  customer_id?: string | null;
+  session_id?: string | null;
+  product_id: string;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+}
+
 // Filters & Query Parameters
 export interface ProductFilterParams {
   categorySlug?: string;
