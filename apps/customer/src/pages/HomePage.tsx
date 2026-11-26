@@ -171,12 +171,12 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 2. CIRCULAR CATEGORY SELECTOR */}
-      <section className="bg-brand-ivory/50 border-y border-brand-cream/60 py-4 sm:py-6">
-        <CategoryCircularSelector />
+      <section className="bg-brand-ivory/40 border-y border-brand-cream/60 py-2 sm:py-3 !mt-0 sm:!mt-0">
+        <CategoryCircularSelector className="!py-0" />
       </section>
 
       {/* 3. SHOP BY WEAVE CATEGORY */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 !mt-6 sm:!mt-10">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-3 border-b border-brand-cream/80">
           <div>
             <span className="text-xs uppercase tracking-widest text-brand-burgundy font-semibold">

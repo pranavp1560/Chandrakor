@@ -176,7 +176,7 @@ export const ShopPage: React.FC = () => {
       </div>
 
       {/* Visual Category Selector Strip */}
-      <div className="mb-8 bg-brand-ivory/50 rounded-xl border border-brand-cream/80 p-3 sm:p-5 shadow-sm">
+      <div className="mb-8 bg-brand-ivory/50 rounded-xl border border-brand-cream/80 p-3 sm:p-4 shadow-sm">
         <CategoryCircularSelector
           showAllOption={true}
           selectedCategory={selectedCategory}
@@ -193,7 +193,7 @@ export const ShopPage: React.FC = () => {
               }
             }
           }}
-          className="py-0 px-0"
+          className="!py-0"
         />
       </div>
 

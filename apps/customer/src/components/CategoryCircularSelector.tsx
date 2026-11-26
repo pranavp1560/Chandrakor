@@ -16,17 +16,17 @@ interface CategoryCircularSelectorProps {
 
 // Curated high-res portraits matching traditional Indian drape aesthetics
 const FALLBACK_CATEGORY_IMAGES: Record<string, string> = {
-  'paithani': 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&q=80&w=600',
-  'banarasi-silk': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600',
-  'navvari-sarees': 'https://images.unsplash.com/photo-1610030469668-93510cb07655?auto=format&fit=crop&q=80&w=600',
-  'party-wear': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600',
-  'silk-sarees': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600',
-  'cotton-sarees': 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=600',
-  'designer-sarees': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600',
-  'tussar-sarees': 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&q=80&w=600',
-  'pure-cotton': 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=600',
-  'mul-cotton': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600',
-  'embroidered': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600',
+  'paithani': 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800',
+  'banarasi-silk': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
+  'navvari-sarees': 'https://images.unsplash.com/photo-1610030469668-93510cb07655?auto=format&fit=crop&q=80&w=800',
+  'party-wear': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800',
+  'silk-sarees': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
+  'cotton-sarees': 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&q=80&w=800',
+  'designer-sarees': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800',
+  'tussar-sarees': 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800',
+  'pure-cotton': 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800',
+  'mul-cotton': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800',
+  'embroidered': 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
 };
 
 export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> = ({
@@ -103,11 +103,11 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
   };
 
   return (
-    <section className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 ${className}`}>
-      {/* Title Header (Matching the exact 'TRADITION' style in reference screenshot) */}
+    <section className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 ${className}`}>
+      {/* Title Header */}
       {title && (
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-normal tracking-[0.25em] text-brand-charcoal uppercase">
+        <div className="text-center mb-4 sm:mb-6">
+          <h2 className="font-serif text-lg sm:text-xl lg:text-2xl font-normal tracking-[0.25em] text-brand-charcoal uppercase">
             {title}
           </h2>
           {subtitle && (
@@ -146,16 +146,16 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
         <div
           ref={scrollContainerRef}
           onScroll={checkScroll}
-          className="flex items-start gap-5 sm:gap-8 md:gap-10 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 justify-start md:justify-center"
+          className="flex items-start gap-4 sm:gap-6 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth py-1 px-1 justify-start md:justify-center"
         >
           {/* Optional "All Sarees" Circle for Shop filtering */}
           {showAllOption && (
             <button
               onClick={() => onSelectCategory && onSelectCategory('')}
-              className="flex flex-col items-center group shrink-0 focus:outline-none"
+              className="flex flex-col items-center group shrink-0 focus:outline-none min-w-[96px] sm:min-w-[112px] md:min-w-[128px]"
             >
               <div
-                className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 ${
+                className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 ${
                   !selectedCategory
                     ? 'ring-2 ring-brand-burgundy ring-offset-2 ring-offset-white shadow-md scale-105 bg-brand-burgundy text-white'
                     : 'bg-stone-100 text-brand-charcoal border border-brand-cream hover:border-brand-burgundy/40 hover:shadow-sm'
@@ -169,7 +169,7 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
                 </div>
               </div>
               <span
-                className={`mt-2.5 text-xs sm:text-sm text-center font-medium transition-colors whitespace-nowrap ${
+                className={`mt-2 sm:mt-2.5 text-xs sm:text-sm text-center font-medium transition-colors max-w-[100px] sm:max-w-[130px] line-clamp-2 leading-tight ${
                   !selectedCategory ? 'text-brand-burgundy font-semibold' : 'text-brand-charcoal group-hover:text-brand-burgundy'
                 }`}
               >
@@ -187,7 +187,7 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
               <>
                 {/* Circular Image Container */}
                 <div
-                  className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden relative shadow-sm transition-all duration-300 ${
+                  className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full overflow-hidden relative shadow-sm transition-all duration-300 ${
                     isSelected
                       ? 'ring-2 ring-brand-burgundy ring-offset-2 ring-offset-white shadow-md scale-105'
                       : 'border border-stone-200/80 group-hover:border-brand-burgundy/40 group-hover:shadow-md'
@@ -205,7 +205,7 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
 
                 {/* Category Label Below Circle */}
                 <span
-                  className={`mt-2 sm:mt-2.5 text-xs sm:text-sm text-center font-medium transition-colors whitespace-nowrap block ${
+                  className={`mt-2 sm:mt-2.5 text-xs sm:text-sm text-center font-medium transition-colors max-w-[100px] sm:max-w-[130px] line-clamp-2 leading-tight block ${
                     isSelected
                       ? 'text-brand-burgundy font-semibold'
                       : 'text-brand-charcoal group-hover:text-brand-burgundy'
@@ -222,7 +222,7 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
                 <button
                   key={cat.id || cat.slug}
                   onClick={() => onSelectCategory(cat.slug)}
-                  className="flex flex-col items-center group shrink-0 focus:outline-none"
+                  className="flex flex-col items-center group shrink-0 focus:outline-none min-w-[96px] sm:min-w-[112px] md:min-w-[128px]"
                 >
                   {content}
                 </button>
@@ -234,7 +234,7 @@ export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> =
               <Link
                 key={cat.id || cat.slug}
                 to={`/shop?category=${cat.slug}`}
-                className="flex flex-col items-center group shrink-0 focus:outline-none"
+                className="flex flex-col items-center group shrink-0 focus:outline-none min-w-[96px] sm:min-w-[112px] md:min-w-[128px]"
               >
                 {content}
               </Link>
