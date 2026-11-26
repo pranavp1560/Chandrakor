@@ -4,6 +4,7 @@ import { Filter, X, SlidersHorizontal, ArrowUpDown, RefreshCw } from 'lucide-rea
 import { Product, Category } from '@chandrakor/shared-types';
 import { supabase } from '@chandrakor/supabase-client';
 import { ProductCard } from '../components/ProductCard';
+import { CategoryCircularSelector } from '../components/CategoryCircularSelector';
 
 export const ShopPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -172,6 +173,30 @@ export const ShopPage: React.FC = () => {
         <p className="text-xs sm:text-sm text-brand-warm-grey mt-1">
           Showing {products.length} authenticated Indian heirloom drapes
         </p>
+      </div>
+
+      {/* Visual Category Selector Strip */}
+      <div className="mb-8 bg-brand-ivory/50 rounded-xl border border-brand-cream/80 p-3 sm:p-5 shadow-sm">
+        <CategoryCircularSelector
+          title="TRADITION"
+          subtitle="Select a weave to explore heirloom collections"
+          showAllOption={true}
+          selectedCategory={selectedCategory}
+          onSelectCategory={(slug) => {
+            if (selectedCategory === slug) {
+              setSelectedCategory('');
+              setSearchParams({});
+            } else {
+              setSelectedCategory(slug);
+              if (slug) {
+                setSearchParams({ category: slug });
+              } else {
+                setSearchParams({});
+              }
+            }
+          }}
+          className="py-0 px-0"
+        />
       </div>
 
       {/* Control Bar: Sort & Mobile Filter Toggle */}

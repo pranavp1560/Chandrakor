@@ -46,3 +46,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #B69A65;
 }
+
+/* Hide scrollbar utility for touch/carousel lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

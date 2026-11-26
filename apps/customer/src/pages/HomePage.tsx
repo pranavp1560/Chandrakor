@@ -4,6 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, Award, Compass, Feather, Sparkle
 import { Banner, Category, Product } from '@chandrakor/shared-types';
 import { supabase } from '@chandrakor/supabase-client';
 import { ProductCard } from '../components/ProductCard';
+import { CategoryCircularSelector } from '../components/CategoryCircularSelector';
 
 export const HomePage: React.FC = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -169,7 +170,15 @@ export const HomePage: React.FC = () => {
         )}
       </section>
 
-      {/* 2. EDITORIAL BRAND INTRODUCTION */}
+      {/* 2. CIRCULAR CATEGORY SELECTOR (TRADITION) */}
+      <section className="bg-brand-ivory/50 border-y border-brand-cream/60 py-6 sm:py-10">
+        <CategoryCircularSelector
+          title="TRADITION"
+          subtitle="Explore India's Sacred Handloom Lineages"
+        />
+      </section>
+
+      {/* 3. EDITORIAL BRAND INTRODUCTION */}
       <section className="max-w-4xl mx-auto px-4 text-center space-y-3 sm:space-y-4">
         <span className="text-brand-burgundy font-serif italic text-base sm:text-xl block">
           The Sacred Narrative of Indian Drapes
