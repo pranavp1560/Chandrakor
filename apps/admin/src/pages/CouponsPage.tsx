@@ -186,7 +186,7 @@ export const CouponsPage: React.FC = () => {
             Promotional Coupons & Festive Offers
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Configure percentage or flat price incentives for handloom saree patrons.
+            Configure percentage or flat price incentives for saree patrons.
           </p>
         </div>
 

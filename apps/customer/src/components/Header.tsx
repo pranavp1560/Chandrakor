@@ -14,7 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
   const { totalWishlistItems } = useWishlist();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [announcement, setAnnouncement] = useState<string>(
-    'Complimentary Pan-India Express Shipping & Insured Heirloom Delivery on all orders'
+    'Complimentary Pan-India Express Delivery on all Paithani, Banarasi, Navvari & Party Wear Sarees'
   );
   const location = useLocation();
 
@@ -77,8 +77,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
                   CHANDRAKOR
                 </span>
               </div>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.35em] text-brand-warm-grey uppercase font-medium mt-0.5 text-center lg:text-left lg:ml-7 whitespace-nowrap">
-                Heirloom Sarees • 1984
+              <span className="text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] text-brand-warm-grey uppercase font-medium mt-0.5 text-center lg:text-left lg:ml-7 whitespace-nowrap">
+                Paithani • Banarasi • Navvari • Party Wear
               </span>
             </Link>
           </div>
@@ -147,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
             <Link
               to="/wishlist"
               className="relative p-1.5 sm:p-2 text-brand-charcoal hover:text-brand-burgundy transition-colors rounded-full hover:bg-brand-cream/50 flex items-center"
-              aria-label="View heirloom wishlist"
+              aria-label="View wishlist"
               title="My Wishlist"
             >
               <Heart className="w-4 h-4 sm:w-5 sm:h-5" />

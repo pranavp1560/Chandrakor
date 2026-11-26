@@ -142,8 +142,8 @@ export const OrderTrackingPage: React.FC = () => {
 
   const steps = [
     { label: 'Order Placed', desc: 'Order received & recorded' },
-    { label: 'Order Confirmed', desc: 'Authenticity & payment verified' },
-    { label: 'Heirloom Packaging', desc: 'Handloom inspection & gift box' },
+    { label: 'Order Confirmed', desc: 'Order & payment verified' },
+    { label: 'Quality Packaging', desc: 'Product inspection & secure packaging' },
     { label: 'Dispatched & In Transit', desc: 'Handed over to insured courier' },
     { label: 'Delivered', desc: 'Safely delivered to doorstep' },
   ];
@@ -160,7 +160,7 @@ export const OrderTrackingPage: React.FC = () => {
             Chandrakor Courier Concierge
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal">
-            Track Your Heirloom Saree
+            Track Your Saree Order
           </h1>
           <p className="text-xs sm:text-sm text-brand-warm-grey max-w-md mx-auto">
             Enter your order reference number and verified 10-digit mobile number for real-time dispatch milestones.

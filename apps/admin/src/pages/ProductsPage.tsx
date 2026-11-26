@@ -413,7 +413,7 @@ export const ProductsPage: React.FC = () => {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Saree Products Catalog</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Manage your verified collection of pure handloom sarees, pricing, and stock.
+            Manage your collection of Paithani, Banarasi, Navvari, Party Wear, and regular sarees, pricing, and stock.
           </p>
         </div>
         <button

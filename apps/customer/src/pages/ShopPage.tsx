@@ -168,10 +168,10 @@ export const ShopPage: React.FC = () => {
             ? `${collectionParam.replace('-', ' ')} Sarees`
             : selectedCategory
             ? `${selectedCategory.replace('-', ' ')} Sarees`
-            : 'All Handloom Sarees'}
+            : 'All Sarees'}
         </h1>
         <p className="text-xs sm:text-sm text-brand-warm-grey mt-1">
-          Showing {products.length} authenticated Indian heirloom drapes
+          Showing {products.length} beautiful traditional & designer sarees
         </p>
       </div>
 
@@ -179,7 +179,7 @@ export const ShopPage: React.FC = () => {
       <div className="mb-8 bg-brand-ivory/50 rounded-xl border border-brand-cream/80 p-3 sm:p-5 shadow-sm">
         <CategoryCircularSelector
           title="TRADITION"
-          subtitle="Select a weave to explore heirloom collections"
+          subtitle="Explore Paithani, Banarasi, Navvari, Party Wear & more"
           showAllOption={true}
           selectedCategory={selectedCategory}
           onSelectCategory={(slug) => {
@@ -249,7 +249,7 @@ export const ShopPage: React.FC = () => {
             className="text-xs bg-white border border-brand-cream text-brand-charcoal px-3 py-2 rounded-sm focus:outline-none focus:border-brand-burgundy"
           >
             <option value="featured">Featured Curations</option>
-            <option value="newest">Fresh Looms (Newest)</option>
+            <option value="newest">Fresh Arrivals (Newest)</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
           </select>
@@ -361,7 +361,7 @@ export const ShopPage: React.FC = () => {
             <div className="text-center py-20 bg-white border border-brand-cream rounded-sm p-8">
               <h3 className="font-serif text-2xl font-semibold text-brand-charcoal">No Sarees Found</h3>
               <p className="text-xs sm:text-sm text-brand-warm-grey mt-2 max-w-md mx-auto">
-                No heirloom sarees match your currently selected filters. Clear your filters or explore other weaves.
+                No sarees match your currently selected filters. Clear your filters or explore other categories.
               </p>
               <button
                 onClick={clearAllFilters}

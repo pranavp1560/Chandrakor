@@ -33,8 +33,8 @@ export const Footer: React.FC = () => {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-serif text-base font-semibold text-white">Direct from Weavers</h4>
-              <p className="text-xs text-brand-warm-grey">Fair-trade authentic handlooms</p>
+              <h4 className="font-serif text-base font-semibold text-white">Quality Assurance</h4>
+              <p className="text-xs text-brand-warm-grey">Finest fabrics & traditional designs</p>
             </div>
           </div>
 
@@ -43,8 +43,8 @@ export const Footer: React.FC = () => {
               <RefreshCw className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-serif text-base font-semibold text-white">Heirloom Guarantee</h4>
-              <p className="text-xs text-brand-warm-grey">Generational drape longevity</p>
+              <h4 className="font-serif text-base font-semibold text-white">Satisfaction Guarantee</h4>
+              <p className="text-xs text-brand-warm-grey">Easy exchanges & secure delivery</p>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export const Footer: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-[#B5AFA6] leading-relaxed max-w-sm">
-            Curators of India's finest handloom sarees. From the royal kadwa zari of Varanasi to the peacock tapestries of Yeola and temple korvai borders of Kanchipuram, Chandrakor celebrates centuries of timeless drape artistry.
+            Your premier destination for stunning Indian sarees. From traditional Maharashtrian Paithanis and iconic 9-yard Navvaris to opulent Banarasis, glamorous party wear, and comfortable daily drapes, Chandrakor brings grace to every celebration.
           </p>
           <div className="pt-2 text-xs text-brand-gold-light space-y-1">
             <div className="flex items-center space-x-2">
@@ -82,37 +82,37 @@ export const Footer: React.FC = () => {
         {/* Collections Col */}
         <div>
           <h4 className="font-serif text-sm tracking-wider uppercase font-semibold text-white mb-4">
-            Heirloom Weaves
+            Popular Categories
           </h4>
           <ul className="space-y-2.5 text-xs text-[#B5AFA6]">
             <li>
-              <Link to="/shop?category=banarasi-silk" className="hover:text-brand-gold transition-colors">
-                Banarasi Katan Silk
-              </Link>
-            </li>
-            <li>
-              <Link to="/shop?category=kanjivaram-silk" className="hover:text-brand-gold transition-colors">
-                Kanjivaram Temple Weaves
-              </Link>
-            </li>
-            <li>
               <Link to="/shop?category=paithani" className="hover:text-brand-gold transition-colors">
-                Royal Yeola Paithani
+                Paithani Sarees
               </Link>
             </li>
             <li>
-              <Link to="/shop?category=pure-cotton" className="hover:text-brand-gold transition-colors">
-                Handspun Pure Cotton
+              <Link to="/shop?category=banarasi-silk" className="hover:text-brand-gold transition-colors">
+                Banarasi Sarees
               </Link>
             </li>
             <li>
-              <Link to="/shop?category=mul-cotton" className="hover:text-brand-gold transition-colors">
-                Chanderi & Mulmul
+              <Link to="/shop?category=navvari-sarees" className="hover:text-brand-gold transition-colors">
+                Traditional Navvari
               </Link>
             </li>
             <li>
               <Link to="/shop?category=party-wear" className="hover:text-brand-gold transition-colors">
-                Designer Evening Drapes
+                Party Wear & Designer
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop?category=silk-sarees" className="hover:text-brand-gold transition-colors">
+                Wedding Silk Sarees
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop?category=cotton-sarees" className="hover:text-brand-gold transition-colors">
+                Cotton & Regular Sarees
               </Link>
             </li>
           </ul>
@@ -146,7 +146,7 @@ export const Footer: React.FC = () => {
             </li>
             <li>
               <Link to="/about" className="hover:text-brand-gold transition-colors">
-                Our Weaving Heritage
+                About Chandrakor
               </Link>
             </li>
           </ul>
@@ -155,20 +155,20 @@ export const Footer: React.FC = () => {
         {/* Customer Care Col */}
         <div>
           <h4 className="font-serif text-sm tracking-wider uppercase font-semibold text-white mb-4">
-            Boutique Services
+            Customer Services
           </h4>
           <ul className="space-y-2.5 text-xs text-[#B5AFA6]">
             <li>
-              <span className="text-[#8E8880]">Blouse Custom Stitching</span>
+              <span className="text-[#8E8880]">Blouse Stitching Assistance</span>
             </li>
             <li>
-              <span className="text-[#8E8880]">Silk Mark Verification</span>
+              <span className="text-[#8E8880]">Authentic Quality Check</span>
             </li>
             <li>
-              <span className="text-[#8E8880]">Insured Global Transit</span>
+              <span className="text-[#8E8880]">Express Pan-India Delivery</span>
             </li>
             <li>
-              <span className="text-[#8E8880]">Saree Care & Preservation</span>
+              <span className="text-[#8E8880]">Easy 7-Day Exchange</span>
             </li>
             <li>
               <a href="http://localhost:5174" target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:underline">
@@ -183,7 +183,7 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#8E8880]">
         <p>© {new Date().getFullYear()} Chandrakor Saree Elegance. All rights reserved.</p>
         <p className="mt-2 sm:mt-0 font-serif italic text-brand-gold-light/80">
-          Crafted with reverence for Indian Handloom Traditions
+          Celebrating Traditional & Modern Saree Elegance
         </p>
       </div>
     </footer>

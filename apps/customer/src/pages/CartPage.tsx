@@ -14,7 +14,7 @@ export const CartPage: React.FC = () => {
         </div>
         <h1 className="font-serif text-3xl font-bold text-brand-charcoal">Your Shopping Bag is Empty</h1>
         <p className="text-xs sm:text-sm text-brand-warm-grey max-w-sm mx-auto">
-          Explore our handloom collections of authentic Katan Banarasi, Kanjivaram, and Paithani sarees.
+          Explore our collection of Paithani, Banarasi, Navvari, and Party Wear sarees.
         </p>
         <div className="pt-4">
           <Link
@@ -38,7 +38,7 @@ export const CartPage: React.FC = () => {
             Review Selection
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal mt-1">
-            Your Heirloom Bag ({summary.totalItems} items)
+            Your Shopping Bag ({summary.totalItems} items)
           </h1>
         </div>
         <button
@@ -148,7 +148,7 @@ export const CartPage: React.FC = () => {
             </div>
             {summary.totalDiscount > 0 && (
               <div className="flex justify-between text-emerald-800 font-semibold">
-                <span>Heirloom Discount</span>
+                <span>Special Discount</span>
                 <span>-₹{summary.totalDiscount.toLocaleString('en-IN')}</span>
               </div>
             )}
@@ -177,7 +177,7 @@ export const CartPage: React.FC = () => {
 
             <div className="flex items-center justify-center gap-2 text-xs text-brand-warm-grey pt-2">
               <ShieldCheck className="w-4 h-4 text-brand-gold" />
-              <span>Silk Mark Verified • Tamper-proof Heirloom Packaging</span>
+              <span>Quality Checked • Tamper-proof Secure Packaging</span>
             </div>
           </div>
         </div>

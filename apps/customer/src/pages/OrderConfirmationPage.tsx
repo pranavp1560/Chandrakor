@@ -90,7 +90,7 @@ export const OrderConfirmationPage: React.FC = () => {
               Dhanyavaad, {customerName}
             </h1>
             <p className="text-sm text-brand-warm-grey max-w-lg mx-auto leading-relaxed">
-              Your heirloom saree has been reserved with care. A confirmation SMS and digital invoice have been dispatched.
+              Your saree order has been confirmed with care. A confirmation SMS and digital invoice have been dispatched.
             </p>
           </div>
 
@@ -149,7 +149,7 @@ export const OrderConfirmationPage: React.FC = () => {
           {orderDetails && orderDetails.items && (
             <div className="border border-brand-cream/80 rounded-sm p-4 text-left space-y-3">
               <h3 className="font-serif text-sm font-bold text-brand-charcoal border-b border-brand-cream pb-2">
-                Curated Heirloom Sarees in this Order
+                Sarees in this Order
               </h3>
               <div className="space-y-3 divide-y divide-slate-100">
                 {orderDetails.items.map((it: any, idx: number) => (

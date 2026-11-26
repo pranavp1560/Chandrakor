@@ -83,7 +83,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const availableStock = invData ? invData.quantity_available : 10;
       if (availableStock <= 0) {
-        alert('This heirloom saree is currently sold out.');
+        alert('This saree is currently sold out.');
         return false;
       }
 

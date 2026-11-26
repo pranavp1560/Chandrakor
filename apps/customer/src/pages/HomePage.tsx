@@ -94,7 +94,7 @@ export const HomePage: React.FC = () => {
               <div className="max-w-xl text-white space-y-4 sm:space-y-5 animate-in fade-in slide-in-from-bottom-6 duration-700">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-brand-burgundy/80 backdrop-blur-sm border border-brand-gold/40 text-brand-gold text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold rounded-sm">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Heirloom Indian Weaves</span>
+                  <span>Traditional & Festive Sarees</span>
                 </div>
 
                 <h1 className="font-serif text-2xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-white break-words">
@@ -174,21 +174,21 @@ export const HomePage: React.FC = () => {
       <section className="bg-brand-ivory/50 border-y border-brand-cream/60 py-6 sm:py-10">
         <CategoryCircularSelector
           title="TRADITION"
-          subtitle="Explore India's Sacred Handloom Lineages"
+          subtitle="Explore Popular Paithani, Banarasi, Navvari & Regular Sarees"
         />
       </section>
 
       {/* 3. EDITORIAL BRAND INTRODUCTION */}
       <section className="max-w-4xl mx-auto px-4 text-center space-y-3 sm:space-y-4">
         <span className="text-brand-burgundy font-serif italic text-base sm:text-xl block">
-          The Sacred Narrative of Indian Drapes
+          Timeless Indian Elegance for Every Occasion
         </span>
         <h2 className="font-serif text-2xl sm:text-4xl text-brand-charcoal font-bold tracking-tight break-words">
-          Where Generational Artistry Meets Uncompromising Purity
+          From Royal Paithanis to Everyday Drapes, Crafted for You
         </h2>
         <div className="w-16 h-0.5 bg-brand-gold mx-auto my-2" />
         <p className="text-sm sm:text-base text-brand-warm-grey leading-relaxed max-w-2xl mx-auto">
-          Every saree at Chandrakor is an ode to India’s immortal handloom heritage. Handcrafted on pit looms across historic weaving enclaves, each weave carries the breath, devotion, and centuries of mastery passed down through weaver lineages.
+          At Chandrakor, we celebrate the grace and charm of Indian sarees for every moment. Discover our exquisite selection of authentic Paithanis, grand Banarasis, traditional 9-yard Navvaris, chic Party Wear, and breathable daily wear sarees tailored for elegance, comfort, and celebration.
         </p>
       </section>
 
@@ -197,17 +197,17 @@ export const HomePage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-3 border-b border-brand-cream/80">
           <div>
             <span className="text-xs uppercase tracking-widest text-brand-burgundy font-semibold">
-              Sacred Weaving Enclaves
+              Explore By Style
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal mt-1">
-              Shop by Weave Category
+              Shop by Category
             </h2>
           </div>
           <Link
             to="/shop"
             className="mt-2 sm:mt-0 text-xs font-semibold uppercase tracking-wider text-brand-burgundy hover:text-brand-burgundy-dark flex items-center gap-1"
           >
-            <span>View All Weaves</span>
+            <span>View All Categories</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -231,7 +231,7 @@ export const HomePage: React.FC = () => {
               {/* Text */}
               <div className="relative z-10 text-white space-y-2">
                 <span className="text-[10px] tracking-[0.25em] text-brand-gold uppercase font-bold">
-                  Certified Handloom
+                  Popular Choice
                 </span>
                 <h3 className="font-serif text-2xl font-bold tracking-wide group-hover:text-brand-gold-light transition-colors">
                   {cat.name}
@@ -254,7 +254,7 @@ export const HomePage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-3 border-b border-brand-cream/80">
           <div>
             <span className="text-xs uppercase tracking-widest text-brand-burgundy font-semibold">
-              Fresh Off The Loom
+              Trending Collections
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal mt-1">
               New Seasonal Arrivals
@@ -292,20 +292,20 @@ export const HomePage: React.FC = () => {
 
           <div className="relative z-10 p-5 sm:p-14 max-w-xl text-white space-y-3 sm:space-y-4">
             <span className="text-[10px] sm:text-xs tracking-wider sm:tracking-[0.3em] uppercase text-brand-gold font-bold">
-              Royal Trousseau & Bridal Sarees
+              Royal Wedding & Festive Sarees
             </span>
             <h2 className="font-serif text-2xl sm:text-5xl font-bold leading-tight break-words">
-              An Heirloom for Your Most Sacred Milestone
+              Grand Sarees for Weddings & Celebrations
             </h2>
             <p className="text-xs sm:text-sm text-stone-200 leading-relaxed font-light">
-              Crafted with authentic gold-silver zari kadwa, heavy korvai temple borders, and bespoke peacock tapestries designed to be cherished for generations.
+              Explore rich bridal Banarasis, royal Paithanis, and exquisite festive sarees designed to make your special moments truly unforgettable.
             </p>
             <div className="pt-2 sm:pt-3">
               <Link
                 to="/shop?collection=wedding-collection"
                 className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-brand-gold hover:bg-brand-gold-light text-brand-charcoal text-[11px] sm:text-xs font-semibold uppercase tracking-wider sm:tracking-[0.2em] transition-all rounded-sm shadow-md"
               >
-                <span>Explore Bridal Collection</span>
+                <span>Explore Wedding Collection</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -318,10 +318,10 @@ export const HomePage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-3 border-b border-brand-cream/80">
           <div>
             <span className="text-xs uppercase tracking-widest text-brand-burgundy font-semibold">
-              Most Revered by Connoisseurs
+              Customer Favorites
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal mt-1">
-              Cherished Best Sellers
+              Trending Best Sellers
             </h2>
           </div>
           <Link
@@ -340,7 +340,7 @@ export const HomePage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 text-brand-warm-grey">Loading cherished heirlooms...</div>
+          <div className="text-center py-12 text-brand-warm-grey">Loading best sellers...</div>
         )}
       </section>
     </div>

@@ -83,15 +83,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           <div className="max-h-96 overflow-y-auto p-4">
             {query.trim() && !loading && results.length === 0 && (
               <div className="text-center py-8 text-brand-warm-grey text-sm">
-                No heirloom sarees found matching "{query}". Try searching for "Banarasi", "Silk", or "Red".
+                No sarees found matching "{query}". Try searching for "Paithani", "Banarasi", "Navvari", or "Party Wear".
               </div>
             )}
 
             {!query.trim() && (
               <div className="py-6 px-2">
-                <p className="text-xs text-brand-warm-grey uppercase tracking-wider mb-3">Popular Weave Searches</p>
+                <p className="text-xs text-brand-warm-grey uppercase tracking-wider mb-3">Popular Searches</p>
                 <div className="flex flex-wrap gap-2">
-                  {['Banarasi Katan Silk', 'Kanjivaram Silk', 'Royal Paithani', 'Mulmul Cotton', 'Bridal Red', 'Party Wear'].map(
+                  {['Paithani Sarees', 'Banarasi Silk', 'Navvari Sarees', 'Party Wear', 'Daily Cotton', 'Bridal Sarees'].map(
                     (tag) => (
                       <button
                         key={tag}

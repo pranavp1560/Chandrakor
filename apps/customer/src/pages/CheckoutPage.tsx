@@ -268,7 +268,7 @@ export const CheckoutPage: React.FC = () => {
           amount: Math.round(grandTotal * 100),
           currency: 'INR',
           name: 'CHANDRAKOR',
-          description: `Order ${createdOrderNumber} • Heirloom Sarees`,
+          description: `Order ${createdOrderNumber} • Saree Elegance`,
           prefill: {
             name: formData.fullName,
             email: formData.email,
@@ -980,7 +980,7 @@ export const CheckoutPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>7-Day Return / Exchange Policy on Handlooms</span>
+                  <span>7-Day Return / Exchange Policy</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />

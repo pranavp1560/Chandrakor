@@ -66,7 +66,7 @@ export const ProductDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center font-serif text-xl text-brand-warm-grey">
-        Unveiling Chandrakor Heirloom Drape...
+        Loading Saree Details...
       </div>
     );
   }
@@ -137,7 +137,7 @@ export const ProductDetailPage: React.FC = () => {
             )}
             {product.is_featured && !product.is_best_seller && (
               <span className="absolute top-4 left-4 bg-brand-gold text-brand-charcoal text-xs tracking-widest uppercase font-bold px-3 py-1 rounded-sm shadow-md">
-                Heirloom Weave
+                Special Collection
               </span>
             )}
             <button
@@ -180,7 +180,7 @@ export const ProductDetailPage: React.FC = () => {
             {/* SKU & Category */}
             <div className="flex items-center justify-between text-xs text-brand-warm-grey">
               <span className="uppercase tracking-widest font-semibold text-brand-burgundy">
-                {product.category?.name || 'Pure Handloom'}
+                {product.category?.name || 'Traditional Saree'}
               </span>
               <span className="font-mono">SKU: {product.sku}</span>
             </div>
@@ -212,12 +212,12 @@ export const ProductDetailPage: React.FC = () => {
             <div>
               {isOutOfStock ? (
                 <div className="p-3 bg-red-50 border border-red-200 text-red-800 text-xs rounded-sm font-semibold">
-                  Currently Sold Out. Crafting additional pieces on our looms.
+                  Currently Sold Out. Restocking soon!
                 </div>
               ) : isLowStock ? (
                 <div className="p-3 bg-amber-50 border border-amber-200 text-amber-900 text-xs rounded-sm font-semibold flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-amber-600 animate-ping" />
-                  <span>High Demand: Only {availableStock} pieces remain in physical vault</span>
+                  <span>High Demand: Only {availableStock} pieces remain in stock</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2 text-xs text-emerald-800 font-semibold">
@@ -235,7 +235,7 @@ export const ProductDetailPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-2 text-brand-charcoal">
                 <div>
                   <span className="text-brand-warm-grey block">Fabric Pureness:</span>
-                  <span className="font-semibold">{product.fabric || 'Pure Silk Handloom'}</span>
+                  <span className="font-semibold">{product.fabric || 'Fine Silk Blend'}</span>
                 </div>
                 <div>
                   <span className="text-brand-warm-grey block">Shade & Hue:</span>
@@ -304,7 +304,7 @@ export const ProductDetailPage: React.FC = () => {
                   className="flex-1 py-3.5 px-6 bg-brand-burgundy hover:bg-brand-burgundy-dark text-white text-xs font-semibold uppercase tracking-[0.2em] transition-all rounded-sm shadow-md flex items-center justify-center gap-2"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>{isAdding ? 'Adding Heirloom...' : 'Add to Bag'}</span>
+                  <span>{isAdding ? 'Adding to Bag...' : 'Add to Bag'}</span>
                 </button>
 
                 <button
@@ -334,7 +334,7 @@ export const ProductDetailPage: React.FC = () => {
                   }`}
                 >
                   <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current text-brand-burgundy' : ''}`} />
-                  <span>{isInWishlist(product.id) ? 'Saved to Heirloom Wishlist' : 'Save to Wishlist (Notify When Re-loomed)'}</span>
+                  <span>{isInWishlist(product.id) ? 'Saved to Wishlist' : 'Save to Wishlist (Notify When Available)'}</span>
                 </button>
               </div>
             )}
@@ -343,15 +343,15 @@ export const ProductDetailPage: React.FC = () => {
             <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 text-[11px] text-brand-warm-grey text-center">
               <div className="flex flex-col items-center gap-1 p-2 bg-white rounded border border-brand-cream/40">
                 <Award className="w-4 h-4 text-brand-gold" />
-                <span>Silk Mark Certified</span>
+                <span>Quality Tested</span>
               </div>
               <div className="flex flex-col items-center gap-1 p-2 bg-white rounded border border-brand-cream/40">
                 <Truck className="w-4 h-4 text-brand-gold" />
-                <span>Complimentary Shipping</span>
+                <span>Express Delivery</span>
               </div>
               <div className="flex flex-col items-center gap-1 p-2 bg-white rounded border border-brand-cream/40">
                 <ShieldCheck className="w-4 h-4 text-brand-gold" />
-                <span>Direct Handloom Weave</span>
+                <span>Authentic Design</span>
               </div>
             </div>
           </div>
@@ -363,7 +363,7 @@ export const ProductDetailPage: React.FC = () => {
         <section className="pt-12 border-t border-brand-cream/80">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">
-              Complementary Heirloom Sarees
+              You May Also Like
             </h2>
             <Link
               to="/shop"

@@ -209,7 +209,7 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ order, onClose }) =>
 
               <div className="text-[10px] text-slate-500 space-y-0.5">
                 <p>• Goods once sold can be exchanged/returned within 7 calendar days under terms.</p>
-                <p>• Certified genuine handloom silk certified under Central Silk Board Silk Mark.</p>
+                <p>• Genuine quality saree verified and inspected prior to dispatch.</p>
                 <p>• This is a computer-generated digital tax invoice and requires no physical signature.</p>
               </div>
             </div>

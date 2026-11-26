@@ -27,7 +27,7 @@ export const WishlistPage: React.FC = () => {
     const result = await moveAllToCart();
     setIsMovingAll(false);
     if (result.added > 0) {
-      setFeedbackMsg(`Successfully transferred ${result.added} heirloom piece(s) to your bag.`);
+      setFeedbackMsg(`Successfully transferred ${result.added} saree(s) to your bag.`);
       setIsCartOpen(true);
       setTimeout(() => setFeedbackMsg(null), 4000);
     }
@@ -41,7 +41,7 @@ export const WishlistPage: React.FC = () => {
           Home
         </Link>
         <span>/</span>
-        <span className="text-brand-charcoal font-medium">Heirloom Wishlist</span>
+        <span className="text-brand-charcoal font-medium">My Wishlist</span>
       </nav>
 
       {/* Header Banner */}
@@ -49,13 +49,13 @@ export const WishlistPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-brand-burgundy text-xs font-semibold uppercase tracking-widest mb-1.5">
             <Sparkles className="w-4 h-4 text-brand-gold" />
-            <span>Personal Vault</span>
+            <span>Saved Favorites</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal tracking-tight">
-            My Heirloom Wishlist
+            My Saree Wishlist
           </h1>
           <p className="text-sm text-brand-warm-grey mt-1">
-            Carefully curated sarees and handcrafted weaves saved for your celebrations.
+            Beautiful Paithani, Banarasi, Navvari, and Party Wear sarees saved for your celebrations.
           </p>
         </div>
 
@@ -111,8 +111,8 @@ export const WishlistPage: React.FC = () => {
             Your Wishlist is Empty
           </h2>
           <p className="text-sm text-brand-warm-grey max-w-md mx-auto mb-8 leading-relaxed">
-            You haven't saved any sarees yet. Explore our royal Banarasi silks, Kanjivaram heirlooms,
-            and Paithani weaves to find your match.
+            You haven't saved any sarees yet. Explore our royal Paithanis, grand Banarasi silks, traditional Navvaris,
+            and glamorous Party Wear sarees to find your match.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link

@@ -44,14 +44,14 @@ export const CartDrawer: React.FC = () => {
                 </div>
                 <h3 className="font-serif text-xl font-semibold text-brand-charcoal">Your Bag is Empty</h3>
                 <p className="text-xs text-brand-warm-grey max-w-xs mt-1.5 leading-relaxed">
-                  Explore our royal collection of handloom Banarasi, Kanjivaram, and Paithani sarees.
+                  Explore our popular collection of Paithani, Banarasi, Navvari, and Party Wear sarees.
                 </p>
                 <Link
                   to="/shop"
                   onClick={() => setIsCartOpen(false)}
                   className="mt-6 px-6 py-2.5 bg-brand-burgundy text-white text-xs font-semibold uppercase tracking-wider hover:bg-brand-burgundy-dark transition-colors shadow-sm"
                 >
-                  Explore Heirloom Sarees
+                  Explore Sarees
                 </Link>
               </div>
             ) : (
@@ -140,7 +140,7 @@ export const CartDrawer: React.FC = () => {
                 </div>
                 {summary.totalDiscount > 0 && (
                   <div className="flex justify-between text-emerald-800">
-                    <span>Heirloom Savings</span>
+                    <span>Special Savings</span>
                     <span>-₹{summary.totalDiscount.toLocaleString('en-IN')}</span>
                   </div>
                 )}
