@@ -30,7 +30,7 @@ const FALLBACK_CATEGORY_IMAGES: Record<string, string> = {
 };
 
 export const CategoryCircularSelector: React.FC<CategoryCircularSelectorProps> = ({
-  title = 'TRADITION',
+  title = '',
   subtitle,
   categories: propCategories,
   selectedCategory = '',

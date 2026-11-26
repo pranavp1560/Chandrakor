@@ -170,26 +170,9 @@ export const HomePage: React.FC = () => {
         )}
       </section>
 
-      {/* 2. CIRCULAR CATEGORY SELECTOR (TRADITION) */}
-      <section className="bg-brand-ivory/50 border-y border-brand-cream/60 py-6 sm:py-10">
-        <CategoryCircularSelector
-          title="TRADITION"
-          subtitle="Explore Popular Paithani, Banarasi, Navvari & Regular Sarees"
-        />
-      </section>
-
-      {/* 3. EDITORIAL BRAND INTRODUCTION */}
-      <section className="max-w-4xl mx-auto px-4 text-center space-y-3 sm:space-y-4">
-        <span className="text-brand-burgundy font-serif italic text-base sm:text-xl block">
-          Timeless Indian Elegance for Every Occasion
-        </span>
-        <h2 className="font-serif text-2xl sm:text-4xl text-brand-charcoal font-bold tracking-tight break-words">
-          From Royal Paithanis to Everyday Drapes, Crafted for You
-        </h2>
-        <div className="w-16 h-0.5 bg-brand-gold mx-auto my-2" />
-        <p className="text-sm sm:text-base text-brand-warm-grey leading-relaxed max-w-2xl mx-auto">
-          At Chandrakor, we celebrate the grace and charm of Indian sarees for every moment. Discover our exquisite selection of authentic Paithanis, grand Banarasis, traditional 9-yard Navvaris, chic Party Wear, and breathable daily wear sarees tailored for elegance, comfort, and celebration.
-        </p>
+      {/* 2. CIRCULAR CATEGORY SELECTOR */}
+      <section className="bg-brand-ivory/50 border-y border-brand-cream/60 py-4 sm:py-6">
+        <CategoryCircularSelector />
       </section>
 
       {/* 3. SHOP BY WEAVE CATEGORY */}

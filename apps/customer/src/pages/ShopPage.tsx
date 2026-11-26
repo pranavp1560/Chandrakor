@@ -178,8 +178,6 @@ export const ShopPage: React.FC = () => {
       {/* Visual Category Selector Strip */}
       <div className="mb-8 bg-brand-ivory/50 rounded-xl border border-brand-cream/80 p-3 sm:p-5 shadow-sm">
         <CategoryCircularSelector
-          title="TRADITION"
-          subtitle="Explore Paithani, Banarasi, Navvari, Party Wear & more"
           showAllOption={true}
           selectedCategory={selectedCategory}
           onSelectCategory={(slug) => {
