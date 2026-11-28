@@ -4,6 +4,7 @@ import { Search, ShoppingBag, Menu, X, Sparkles, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { supabase } from '@chandrakor/supabase-client';
+import logoImg from '../assets/logo.png';
 
 interface HeaderProps {
   onOpenSearch: () => void;
@@ -67,19 +68,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
 
           {/* Brand Logo */}
           <div className="flex-1 lg:flex-none flex justify-center lg:justify-start px-1 min-w-0">
-            <Link to="/" className="flex flex-col items-center lg:items-start group">
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                {/* Crescent Moon heritage emblem */}
-                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-brand-burgundy flex items-center justify-center bg-brand-cream/40 group-hover:bg-brand-burgundy transition-all shrink-0">
-                  <span className="text-brand-burgundy group-hover:text-brand-gold font-serif text-xs sm:text-sm font-bold">☾</span>
-                </div>
-                <span className="font-serif text-lg sm:text-2xl lg:text-3xl tracking-[0.14em] sm:tracking-[0.22em] text-brand-burgundy font-bold uppercase transition-colors whitespace-nowrap">
-                  CHANDRAKOR
-                </span>
-              </div>
-              <span className="text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] text-brand-warm-grey uppercase font-medium mt-0.5 text-center lg:text-left lg:ml-7 whitespace-nowrap">
-                Paithani • Banarasi • Navvari • Party Wear
-              </span>
+            <Link to="/" className="flex items-center group py-1">
+              <img
+                src={logoImg}
+                alt="CHANDRAKOR — The Soul of Indian Elegance"
+                className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              />
             </Link>
           </div>
 
