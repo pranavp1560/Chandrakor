@@ -4,7 +4,6 @@ import { ArrowRight, ChevronLeft, ChevronRight, Award, Compass, Feather, Sparkle
 import { Banner, Category, Product } from '@chandrakor/shared-types';
 import { supabase } from '@chandrakor/supabase-client';
 import { ProductCard } from '../components/ProductCard';
-import { CategoryCircularSelector } from '../components/CategoryCircularSelector';
 
 export const HomePage: React.FC = () => {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -170,12 +169,7 @@ export const HomePage: React.FC = () => {
         )}
       </section>
 
-      {/* 2. CIRCULAR CATEGORY SELECTOR */}
-      <section className="bg-brand-ivory/40 border-y border-brand-cream/60 py-2 sm:py-3 !mt-0 sm:!mt-0">
-        <CategoryCircularSelector className="!py-0" />
-      </section>
-
-      {/* 3. SHOP BY WEAVE CATEGORY */}
+      {/* 2. SHOP BY WEAVE CATEGORY */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 !mt-6 sm:!mt-10">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-3 border-b border-brand-cream/80">
           <div>
